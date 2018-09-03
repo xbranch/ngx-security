@@ -23,6 +23,18 @@
       ],
       "roles/*": [
         "dist/roles/*"
+      ],
+      "auth": [
+        "dist/auth"
+      ],
+      "auth/*": [
+        "dist/auth/*"
+      ],
+      "core": [
+        "dist/core"
+      ],
+      "core/*": [
+        "dist/core/*"
       ]
     }
   }

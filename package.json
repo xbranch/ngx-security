@@ -5,11 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:roles": "ng build roles --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish:roles": "npm publish ./dist/roles --access public"
+    "build:core": "ng build core --prod",
+    "build:roles": "ng build roles --prod",
+    "build:auth": "ng build auth --prod",
+    "publish:core": "npm publish ./dist/core --access public",
+    "publish:roles": "npm publish ./dist/roles --access public",
+    "publish:auth": "npm publish ./dist/auth --access public",
+    "build:lib": "npm run build:core && npm run build:roles && npm run build:auth"
   },
   "private": true,
   "dependencies": {

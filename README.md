@@ -3,6 +3,7 @@
 ## Modules
 
 [@ngx-security/roles](projects/roles)
+[@ngx-security/permissions](projects/permissions)
 
 ## License
 

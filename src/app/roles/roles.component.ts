@@ -4,7 +4,7 @@ import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/materi
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { UserRolesProvider } from '../../../projects/roles/src/lib/user-roles.provider';
+import { SubjectRolesProvider } from '../../../projects/roles/src/lib/subject-roles.provider';
 
 const hasRoleStructuralDirective = `<p *hasRole="'ROLE_1'">This should see users with ROLE_1</p>`;
 const hasAnyRoleStructuralDirective = `<p *hasAnyRole="['ROLE_1','ROLE_2']">This should see users with ROLE_1 or ROLE_2</p>`;
@@ -44,7 +44,7 @@ export class RolesComponent {
   hasAnyRolePipePoetry = hasAnyRolePipePoetry;
   hasRolesPipePoetry = hasRolesPipePoetry;
 
-  constructor(private userRoles: UserRolesProvider) {
+  constructor(private userRoles: SubjectRolesProvider) {
     this.filteredRoles = this.rolesCtrl.valueChanges.pipe(
       startWith(null),
       map((role: string | null) => role ? this.filter(role) : this.allRoles.slice())

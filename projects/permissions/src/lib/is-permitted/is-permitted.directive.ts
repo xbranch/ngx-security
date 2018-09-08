@@ -1,28 +1,28 @@
 import { Directive, ElementRef, EmbeddedViewRef, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { SubjectRolesProvider } from '../subject-roles.provider';
+import { SubjectPermissionsProvider } from '../subject-permissions.provider';
 
-@Directive({selector: '[hasRoles]'})
-export class HasRolesDirective implements OnInit, OnDestroy {
+@Directive({selector: '[isPermitted]'})
+export class IsPermittedDirective implements OnInit, OnDestroy {
 
-  private roles: string[] = null;
+  private permission: string = null;
 
   private sub: Subscription;
   private embeddedViewRef: EmbeddedViewRef<any> = null;
 
   @Input()
-  set hasRoles(roles: string[]) {
-    this.roles = roles;
+  set isPermitted(permission: string) {
+    this.permission = permission;
     this.updateView();
   }
 
   constructor(private element: ElementRef, private templateRef: TemplateRef<any>,
-              private viewContainer: ViewContainerRef, private subject: SubjectRolesProvider) {
+              private viewContainer: ViewContainerRef, private subject: SubjectPermissionsProvider) {
   }
 
   ngOnInit(): void {
-    this.sub = this.subject.roles$.subscribe(() => this.updateView());
+    this.sub = this.subject.permissions$.subscribe(() => this.updateView());
   }
 
   ngOnDestroy(): void {
@@ -32,7 +32,7 @@ export class HasRolesDirective implements OnInit, OnDestroy {
   }
 
   private updateView() {
-    if (!this.subject.hasRoles(this.roles)) {
+    if (!this.subject.isPermitted(this.permission)) {
       this.viewContainer.clear();
       this.embeddedViewRef = null;
     } else if (!this.embeddedViewRef) {

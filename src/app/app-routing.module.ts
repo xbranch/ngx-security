@@ -14,6 +14,10 @@ const routes: Routes = [{
   loadChildren: './roles/roles.module#RolesModule',
   data: {title: 'ngx-security/roles', pageTitle: 'Roles', pageIcon: 'security'}
 }, {
+  path: 'permissions',
+  loadChildren: './permissions/permissions.module#PermissionsModule',
+  data: {title: 'ngx-security/permissions', pageTitle: 'Permissions', pageIcon: 'security'}
+}, {
   path: 'auth',
   loadChildren: './auth/auth.module#AuthModule',
   data: {title: 'ngx-security/auth', pageTitle: 'Auth', pageIcon: 'security'}

@@ -6,10 +6,10 @@ import { HasRolePipe } from './has-role/has-role.pipe';
 import { HasAnyRolePipe } from './has-any-role/has-any-role.pipe';
 import { HasRolesPipe } from './has-roles/has-roles.pipe';
 import { HasRolesDirective } from './has-roles/has-roles.directive';
-import { UserRolesFakeProvider, UserRolesProvider } from './user-roles.provider';
+import { SubjectRolesFakeProvider, SubjectRolesProvider } from './subject-roles.provider';
 
-export interface RolesModuleConfig {
-  userRoles?: Provider;
+export interface SecurityRolesModuleConfig {
+  subjectRoles?: Provider;
 }
 
 @NgModule({
@@ -32,21 +32,19 @@ export interface RolesModuleConfig {
 })
 export class SecurityRolesModule {
 
-  static forRoot(config: RolesModuleConfig = {}): ModuleWithProviders {
+  static forRoot(config: SecurityRolesModuleConfig = {}): ModuleWithProviders {
     return {
       ngModule: SecurityRolesModule,
       providers: [
-        config.userRoles || {provide: UserRolesProvider, useClass: UserRolesFakeProvider}
+        config.subjectRoles || {provide: SubjectRolesProvider, useClass: SubjectRolesFakeProvider}
       ]
     };
   }
 
-  static forChild(config: RolesModuleConfig = {}): ModuleWithProviders {
+  static forChild(config: SecurityRolesModuleConfig = {}): ModuleWithProviders {
     return {
       ngModule: SecurityRolesModule,
-      providers: [
-        config.userRoles || {provide: UserRolesProvider, useClass: UserRolesFakeProvider}
-      ]
+      providers: []
     };
   }
 }

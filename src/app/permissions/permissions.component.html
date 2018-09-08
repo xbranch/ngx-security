@@ -1,0 +1,41 @@
+<mat-tab-group>
+  <mat-tab label="Overview">
+
+    <br/>
+    <br/>
+
+    <h2>Installation</h2>
+    <pre><code highlight [code]="'npm install --save @ngx-security/permissions'"></code></pre>
+    <br/>
+
+    <h2>Usage</h2>
+
+    <h4>Structural directives</h4>
+    <pre><code highlight [code]="isPermittedDirective"></code></pre>
+    <br/>
+
+    <h4>Pipes</h4>
+    <pre><code highlight [code]="isPermittedPipe"></code></pre>
+    <br/>
+
+    <h4>Pipes with poetry</h4>
+    <pre><code highlight [code]="isPermittedPipePoetry"></code></pre>
+
+  </mat-tab>
+  <mat-tab label="Examples">
+
+    <br/>
+    <br/>
+
+    <mat-card>
+      <span>This is card is always visible to all users.</span>
+    </mat-card>
+    <mat-card *isPermitted="'printer:xpc4000:configure'">
+      <span>Permission is 'printer:xpc4000:configure'</span>
+    </mat-card>
+    <mat-card *ngIf="'user' | isPermitted:'nas:timeCapsule:write'">
+      <span>Permission is 'nas:timeCapsule:write'</span>
+    </mat-card>
+
+  </mat-tab>
+</mat-tab-group>

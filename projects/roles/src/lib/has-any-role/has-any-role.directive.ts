@@ -1,7 +1,7 @@
 import { Directive, ElementRef, EmbeddedViewRef, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { UserRolesProvider } from '../user-roles.provider';
+import { SubjectRolesProvider } from '../subject-roles.provider';
 
 @Directive({selector: '[hasAnyRole]'})
 export class HasAnyRoleDirective implements OnInit, OnDestroy {
@@ -18,11 +18,11 @@ export class HasAnyRoleDirective implements OnInit, OnDestroy {
   }
 
   constructor(private element: ElementRef, private templateRef: TemplateRef<any>,
-              private viewContainer: ViewContainerRef, private user: UserRolesProvider) {
+              private viewContainer: ViewContainerRef, private subject: SubjectRolesProvider) {
   }
 
   ngOnInit(): void {
-    this.sub = this.user.roles$.subscribe(() => this.updateView());
+    this.sub = this.subject.roles$.subscribe(() => this.updateView());
   }
 
   ngOnDestroy(): void {
@@ -32,7 +32,7 @@ export class HasAnyRoleDirective implements OnInit, OnDestroy {
   }
 
   private updateView() {
-    if (!this.user.hasAnyRole(this.roles)) {
+    if (!this.subject.hasAnyRole(this.roles)) {
       this.viewContainer.clear();
       this.embeddedViewRef = null;
     } else if (!this.embeddedViewRef) {

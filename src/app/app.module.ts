@@ -5,9 +5,10 @@ import { MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToo
 import { HighlightModule } from 'ngx-highlightjs';
 
 import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
+import { SecurityPermissionsModule } from '../../projects/permissions/src/lib/permissions.module';
 
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { AppRoutingModule } from './app-routing.module';
       path: 'assets/highlight'
     }),
 
-    SecurityRolesModule.forRoot()
+    SecurityRolesModule.forRoot(),
+    SecurityPermissionsModule.forRoot()
   ],
   declarations: [
     AppComponent

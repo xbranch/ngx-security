@@ -1,7 +1,2 @@
-/*
- * Public API Surface of permissions
- */
-
-export * from './lib/permissions.service';
-export * from './lib/permissions.component';
+export * from './lib/subject-permissions.provider';
 export * from './lib/permissions.module';

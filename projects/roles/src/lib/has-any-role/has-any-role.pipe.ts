@@ -1,22 +1,22 @@
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { UserRolesProvider } from '../user-roles.provider';
+import { SubjectRolesProvider } from '../subject-roles.provider';
 
 @Pipe({name: 'hasAnyRole', pure: false})
 export class HasAnyRolePipe implements PipeTransform, OnDestroy {
 
-  private hasAnyRole = null;
+  private hasAnyRole: boolean = null;
 
   private sub: Subscription = null;
 
-  constructor(private ref: ChangeDetectorRef, private user: UserRolesProvider) {
+  constructor(private ref: ChangeDetectorRef, private subject: SubjectRolesProvider) {
   }
 
   transform(roles: string[], rolesAsArg: string[]): boolean {
     roles = rolesAsArg || roles;
     this.clear();
-    this.sub = this.user.hasAnyRoleAsync(roles).subscribe((hasAnyRole) => {
+    this.sub = this.subject.hasAnyRoleAsync(roles).subscribe((hasAnyRole) => {
       if (this.hasAnyRole !== hasAnyRole) {
         this.hasAnyRole = hasAnyRole;
         this.ref.markForCheck();

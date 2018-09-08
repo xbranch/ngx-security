@@ -10,11 +10,13 @@
     "e2e": "ng e2e",
     "build:core": "ng build core --prod",
     "build:roles": "ng build roles --prod",
+    "build:permissions": "ng build permissions --prod",
     "build:auth": "ng build auth --prod",
     "publish:core": "npm publish ./dist/core --access public",
     "publish:roles": "npm publish ./dist/roles --access public",
+    "publish:permissions": "npm publish ./dist/permissions --access public",
     "publish:auth": "npm publish ./dist/auth --access public",
-    "build:lib": "npm run build:core && npm run build:roles && npm run build:auth"
+    "build:lib": "npm run build:core && npm run build:roles && npm run build:permissions && npm run build:auth"
   },
   "private": true,
   "dependencies": {

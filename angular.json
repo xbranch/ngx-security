@@ -245,6 +245,46 @@
           }
         }
       }
+    },
+    "permissions": {
+      "root": "projects/permissions",
+      "sourceRoot": "projects/permissions/src",
+      "projectType": "library",
+      "prefix": "sec",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/permissions/tsconfig.lib.json",
+            "project": "projects/permissions/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/permissions/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/permissions/src/test.ts",
+            "tsConfig": "projects/permissions/tsconfig.spec.json",
+            "karmaConfig": "projects/permissions/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/permissions/tsconfig.lib.json",
+              "projects/permissions/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-security"

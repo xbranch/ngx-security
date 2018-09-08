@@ -35,6 +35,12 @@
       ],
       "core/*": [
         "dist/core/*"
+      ],
+      "permissions": [
+        "dist/permissions"
+      ],
+      "permissions/*": [
+        "dist/permissions/*"
       ]
     }
   }

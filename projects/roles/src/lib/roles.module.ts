@@ -1,10 +1,52 @@
-import { NgModule } from '@angular/core';
-import { RolesComponent } from './roles.component';
+import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
+
+import { HasAnyRoleDirective } from './has-any-role/has-any-role.directive';
+import { HasRoleDirective } from './has-role/has-role.directive';
+import { HasRolePipe } from './has-role/has-role.pipe';
+import { HasAnyRolePipe } from './has-any-role/has-any-role.pipe';
+import { HasRolesPipe } from './has-roles/has-roles.pipe';
+import { HasRolesDirective } from './has-roles/has-roles.directive';
+import { UserRolesFakeProvider, UserRolesProvider } from './user-roles.provider';
+
+export interface RolesModuleConfig {
+  userRoles?: Provider;
+}
 
 @NgModule({
-  imports: [
+  declarations: [
+    HasAnyRoleDirective,
+    HasRoleDirective,
+    HasRolePipe,
+    HasAnyRolePipe,
+    HasRolesPipe,
+    HasRolesDirective
   ],
-  declarations: [RolesComponent],
-  exports: [RolesComponent]
+  exports: [
+    HasAnyRoleDirective,
+    HasRoleDirective,
+    HasRolePipe,
+    HasAnyRolePipe,
+    HasRolesPipe,
+    HasRolesDirective
+  ]
 })
-export class RolesModule { }
+export class SecurityRolesModule {
+
+  static forRoot(config: RolesModuleConfig = {}): ModuleWithProviders {
+    return {
+      ngModule: SecurityRolesModule,
+      providers: [
+        config.userRoles || {provide: UserRolesProvider, useClass: UserRolesFakeProvider}
+      ]
+    };
+  }
+
+  static forChild(config: RolesModuleConfig = {}): ModuleWithProviders {
+    return {
+      ngModule: SecurityRolesModule,
+      providers: [
+        config.userRoles || {provide: UserRolesProvider, useClass: UserRolesFakeProvider}
+      ]
+    };
+  }
+}

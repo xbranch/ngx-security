@@ -7,4 +7,4 @@ import { CoreComponent } from './core.component';
   declarations: [CoreComponent],
   exports: [CoreComponent]
 })
-export class CoreModule { }
+export class SecurityCoreModule { }

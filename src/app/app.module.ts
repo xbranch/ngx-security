@@ -1,16 +1,36 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import { HighlightModule } from 'ngx-highlightjs';
+
+import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
+  imports: [
+    BrowserAnimationsModule,
+    AppRoutingModule,
+
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+
+    HighlightModule.forRoot({
+      theme: 'agate',
+      path: 'assets/highlight'
+    }),
+
+    SecurityRolesModule.forRoot()
+  ],
   declarations: [
     AppComponent
-  ],
-  imports: [
-    BrowserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

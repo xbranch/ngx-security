@@ -1,0 +1,83 @@
+<mat-tab-group>
+  <mat-tab label="Overview">
+
+    <br/>
+    <br/>
+
+    <h2>Installation</h2>
+    <pre><code highlight [code]="'npm install --save @ngx-security/roles'"></code></pre>
+    <br/>
+
+    <h2>Usage</h2>
+
+    <h4>Structural directives</h4>
+    <pre><code highlight [code]="hasRoleStructuralDirective"></code></pre>
+    <pre><code highlight [code]="hasAnyRoleStructuralDirective"></code></pre>
+    <pre><code highlight [code]="hasRolesStructuralDirective"></code></pre>
+    <br/>
+
+    <h4>Pipes</h4>
+    <pre><code highlight [code]="hasRolePipe"></code></pre>
+    <pre><code highlight [code]="hasAnyRolePipe"></code></pre>
+    <pre><code highlight [code]="hasRolesPipe"></code></pre>
+    <br/>
+
+    <h4>Pipes with poetry</h4>
+    <pre><code highlight [code]="hasRolePipePoetry"></code></pre>
+    <pre><code highlight [code]="hasAnyRolePipePoetry"></code></pre>
+    <pre><code highlight [code]="hasRolesPipePoetry"></code></pre>
+
+  </mat-tab>
+  <mat-tab label="Examples">
+
+    <br/>
+    <br/>
+
+    <form>
+      <mat-form-field style="width:100%;">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let role of roles" (removed)="remove(role)">
+            {{role}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input #rolesInput
+                 placeholder="User roles"
+                 [formControl]="rolesCtrl"
+                 [matAutocomplete]="auto"
+                 [matChipInputFor]="chipList"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let role of filteredRoles | async" [value]="role">{{role}}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <br/>
+    <br/>
+
+    <mat-card>
+      <span>This is card is always visible to all users. Add some role to see more cards</span>
+    </mat-card>
+    <mat-card *ngIf="'user' | hasRole:'ROLE_1'">
+      <span>This is visible because user has ROLE_1</span>
+    </mat-card>
+    <mat-card *ngIf="'user' | hasAnyRole:['ROLE_1','ROLE_2']">
+      <span>This is visible because user has ROLE_1 or ROLE_2</span>
+    </mat-card>
+    <mat-card *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">
+      <span>This is visible because user has ROLE_1 and ROLE_2</span>
+    </mat-card>
+
+    <mat-card *hasRole="'ROLE_1'">
+      <span>This is visible because user has ROLE_1</span>
+    </mat-card>
+    <mat-card *hasAnyRole="['ROLE_1','ROLE_2']">
+      <span>This is visible because user has ROLE_1 or ROLE_2</span>
+    </mat-card>
+    <mat-card *hasRoles="['ROLE_1','ROLE_2']">
+      <span>This is visible because user has ROLE_1 and ROLE_2</span>
+    </mat-card>
+
+  </mat-tab>
+</mat-tab-group>

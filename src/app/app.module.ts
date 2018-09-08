@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 import { HighlightModule } from 'ngx-highlightjs';
 
@@ -29,7 +30,9 @@ import { AppRoutingModule } from './app-routing.module';
   declarations: [
     AppComponent
   ],
-  providers: [],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

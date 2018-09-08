@@ -17,6 +17,26 @@ export class PermissionsComponent implements OnInit {
   isPermittedPipe = isPermittedPipe;
   isPermittedPipePoetry = isPermittedPipePoetry;
 
+  permissions = `
+[
+  'printer:xpc5000:print',
+  'printer:xpc4000:*',
+  'nas:timeCapsule,fritzbox:read'
+]
+  `;
+
+  firstCard = `
+<mat-card *isPermitted="'printer:xpc4000:configure'">
+<span>Permission is 'printer:xpc4000:configure'</span>
+</mat-card>
+`;
+
+  secondCard = `
+<mat-card *ngIf="'user' | isPermitted:'nas:timeCapsule:write'">
+<span>Permission is 'nas:timeCapsule:write'</span>
+</mat-card>
+`;
+
   constructor(private subject: SubjectPermissionsProvider) {
   }
 

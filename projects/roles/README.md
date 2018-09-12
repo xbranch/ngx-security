@@ -11,6 +11,10 @@ npm install --save @ngx-security/roles
 Implement custom UserRolesService which extends lib's `SubjectRolesProvider` class
 
 ```
+import { Injectable } from '@angular/core';
+import { Observable , of as observableOf } from 'rxjs';
+import { SubjectPermissionsProvider } from '@ngx-security/roles';
+
 @Injectable({ providedIn: 'root' })
 export class UserRolesService extends SubjectRolesProvider {
 

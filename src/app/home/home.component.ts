@@ -16,9 +16,15 @@ export class HomeComponent implements OnInit {
   }, {
     title: 'ngx-security/roles',
     link: '/roles',
-    subTitle: 'Roles scurity module',
+    subTitle: 'Roles security module',
     description: 'Small independent module for handling user roles',
     image: 'assets/roles.png'
+  }, {
+    title: 'ngx-security/permissions',
+    link: '/permissions',
+    subTitle: 'Permissions security module',
+    description: 'Small independent module for handling user permissions in an Apache Shiro-like style',
+    image: 'assets/permissions.png'
   }, {
     title: 'ngx-security/auth',
     link: '/auth',

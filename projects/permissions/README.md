@@ -11,6 +11,10 @@ npm install --save @ngx-security/permissions
 Implement custom UserPermissionsService which extends lib's `SubjectPermissionsProvider` class
 
 ```
+import { Injectable } from '@angular/core';
+import { Observable , of as observableOf } from 'rxjs';
+import { SubjectPermissionsProvider } from '@ngx-security/permissions';
+
 @Injectable({ providedIn: 'root' })
 export class UserPermissionsService extends SubjectPermissionsProvider {
 

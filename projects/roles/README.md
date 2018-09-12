@@ -13,7 +13,7 @@ Implement custom UserRolesService which extends lib's `SubjectRolesProvider` cla
 ```
 import { Injectable } from '@angular/core';
 import { Observable , of as observableOf } from 'rxjs';
-import { SubjectPermissionsProvider } from '@ngx-security/roles';
+import { SubjectRolesProvider } from '@ngx-security/roles';
 
 @Injectable({ providedIn: 'root' })
 export class UserRolesService extends SubjectRolesProvider {

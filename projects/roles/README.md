@@ -8,10 +8,10 @@ npm install --save @ngx-security/roles
 
 ## Setup
 
-Implement UserRoles service which extends lib's SubjectRolesProvider class
+Implement custom UserRolesService which extends lib's `SubjectRolesProvider` class
 
 ```
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserRolesService extends SubjectRolesProvider {
 
     constructor(private user: UserService) { }
@@ -22,19 +22,14 @@ export class UserRolesService extends SubjectRolesProvider {
 }
 ```
 
-Import security roles module in app module.
+Import `SecurityRolesModule` in app module and set your custom `SubjectRolesProvider`.
 
 ```
-// AoT requires an exported function for factories
-export function SubjectRolesProviderFactory(user: UserService) {
-    return new UserRolesService(user);
-}
-
 @NgModule({
   imports: [
     BrowserModule,
     SecurityRolesModule.forRoot({
-        subjectRoles: { provide: SubjectRolesProvider, useFactory: SubjectRolesProviderFactory, deps: [UserService] }
+        subjectRoles: { provide: SubjectRolesProvider, useClass: UserRolesService }
     })
   ],
   bootstrap: [AppComponent]

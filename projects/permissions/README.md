@@ -8,10 +8,10 @@ npm install --save @ngx-security/permissions
 
 ## Setup
 
-Implement UserPermissions service which extends lib's SubjectPermissionsProvider class
+Implement custom UserPermissionsService which extends lib's `SubjectPermissionsProvider` class
 
 ```
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserPermissionsService extends SubjectPermissionsProvider {
 
     constructor(private user: UserService) { }
@@ -22,19 +22,14 @@ export class UserPermissionsService extends SubjectPermissionsProvider {
 }
 ```
 
-Import security permissions module in app module.
+Import `SecurityPermissionsModule` in app module and set your custom `SubjectPermissionsProvider`.
 
 ```
-// AoT requires an exported function for factories
-export function SubjectPermissionsProviderFactory(user: UserService) {
-    return new UserPermissionsService(user);
-}
-
 @NgModule({
   imports: [
     BrowserModule,
     SecurityPermissionsModule.forRoot({
-        subjectPermissions: { provide: SubjectPermissionsProvider, useFactory: SubjectPermissionsProviderFactory, deps: [UserService] }
+        subjectPermissions: { provide: SubjectPermissionsProvider, useClass: UserPermissionsService }
     })
   ],
   bootstrap: [AppComponent]

@@ -1,10 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CoreComponent } from './core.component';
+import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
+
+import { SimpleSubjectProvider, SubjectService } from './subject/subject.service';
+
+export interface SecurityCoreModuleConfig {
+  subject?: Provider;
+}
 
 @NgModule({
-  imports: [
-  ],
-  declarations: [CoreComponent],
-  exports: [CoreComponent]
+  imports: []
 })
-export class SecurityCoreModule { }
+export class SecurityCoreModule {
+  static forRoot(config: SecurityCoreModuleConfig = {}): ModuleWithProviders {
+    return {
+      ngModule: SecurityCoreModule,
+      providers: [
+        config.subject || {provide: SubjectService, useClass: SimpleSubjectProvider}
+      ]
+    };
+  }
+}

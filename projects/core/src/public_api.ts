@@ -1,7 +1,4 @@
-/*
- * Public API Surface of core
- */
-
-export * from './lib/core.service';
-export * from './lib/core.component';
+export * from './lib/store/storage.service';
+export * from './lib/store/session-storage.service';
+export * from './lib/subject/subject.service';
 export * from './lib/core.module';

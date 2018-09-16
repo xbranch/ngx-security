@@ -5,7 +5,7 @@ import { SubjectService } from '../../../projects/core/src/lib/subject/subject.s
 
 const usageComponentController = `
 import { Component } from '@angular/core';
-import { SimpleSubjectService } from '@ngx-security/core';
+import { SubjectService } from '@ngx-security/core';
 
 @Component({
   selector: 'app-root',

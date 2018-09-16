@@ -18,7 +18,9 @@ import { SubjectPermissionsProvider } from '@ngx-security/permissions';
 @Injectable({ providedIn: 'root' })
 export class UserPermissionsService extends SubjectPermissionsProvider {
 
-    constructor(private user: UserService) { }
+    constructor(private user: UserService) {
+        super();
+    }
 
     getPermissions(): Observable<string[]> {
         return observableOf(this.user.permissions);

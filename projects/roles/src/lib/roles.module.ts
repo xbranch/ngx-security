@@ -6,7 +6,7 @@ import { HasRolePipe } from './has-role/has-role.pipe';
 import { HasAnyRolePipe } from './has-any-role/has-any-role.pipe';
 import { HasRolesPipe } from './has-roles/has-roles.pipe';
 import { HasRolesDirective } from './has-roles/has-roles.directive';
-import { SubjectRolesFakeProvider, SubjectRolesProvider } from './subject-roles.provider';
+import { EmptySubjectRolesProvider, SubjectRolesProvider } from './subject-roles.provider';
 
 export interface SecurityRolesModuleConfig {
   subjectRoles?: Provider;
@@ -36,7 +36,7 @@ export class SecurityRolesModule {
     return {
       ngModule: SecurityRolesModule,
       providers: [
-        config.subjectRoles || {provide: SubjectRolesProvider, useClass: SubjectRolesFakeProvider}
+        config.subjectRoles || {provide: SubjectRolesProvider, useClass: EmptySubjectRolesProvider}
       ]
     };
   }

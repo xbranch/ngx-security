@@ -12,7 +12,7 @@ export interface Subject {
   details: SubjectDetails;
 }
 
-export abstract class SubjectService<T extends Subject> implements OnDestroy {
+export abstract class SubjectService<T extends Subject = any> implements OnDestroy {
 
   private subject: BehaviorSubject<T> = new BehaviorSubject<T>(null);
 
@@ -23,7 +23,7 @@ export abstract class SubjectService<T extends Subject> implements OnDestroy {
   details$: Observable<SubjectDetails | null> = this.subject$.pipe(
     map(subject => subject && subject.details || null)
   );
-  name$: Observable<string | null> = this.details$.pipe(
+  displayName$: Observable<string | null> = this.details$.pipe(
     map(details => details && details.displayName || null)
   );
   isAuthorized$: Observable<boolean> = this.subject$.pipe(
@@ -55,5 +55,5 @@ export abstract class SubjectService<T extends Subject> implements OnDestroy {
 }
 
 @Injectable()
-export class SimpleSubjectProvider extends SubjectService<any> {
+export class SimpleSubjectService extends SubjectService<any> {
 }

@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material';
 
-import { CoreComponent } from './core.component';
+import { SecurityCoreModule } from '../../../projects/core/src/lib/core.module';
+
+import { SharedModule } from '../shared/shared.module';
 import { CoreRoutingModule } from './core-routing.module';
+import { CoreComponent } from './core.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    CoreRoutingModule
+    SharedModule,
+    CoreRoutingModule,
+
+    SecurityCoreModule.forChild(),
+
+    MatButtonModule
   ],
   declarations: [
     CoreComponent

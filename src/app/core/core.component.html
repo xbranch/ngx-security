@@ -1,3 +1,40 @@
-<p>
-  core module is in progress
-</p>
+<mat-tab-group>
+  <mat-tab label="Overview">
+
+    <br/>
+    <br/>
+
+    <h2>Installation</h2>
+    <pre><code highlight [code]="'npm install --save @ngx-security/core'"></code></pre>
+    <br/>
+
+    <h2>Usage</h2>
+    <pre><code highlight [code]="usageComponentController"></code></pre>
+    <pre><code highlight [code]="usageComponentView"></code></pre>
+
+  </mat-tab>
+  <mat-tab label="Demo">
+
+    <br/>
+    <br/>
+
+    <div class="login-from-container">
+      <mat-card>
+        <mat-card-title>
+          <span *ngIf="!(user.isAuthorized$ | async)">Please login to continue</span>
+          <span *ngIf="user.isAuthorized$ | async">Welcome, {{user.displayName$ | async}}</span>
+        </mat-card-title>
+        <mat-card-content>
+          <h3 *ngIf="user.isAuthorized$ | async">authorities: {{user.authorities$ | async | json}}</h3>
+        </mat-card-content>
+        <mat-card-actions *ngIf="!(user.isAuthorized$ | async)" align="center">
+          <button mat-raised-button color="primary" (click)="login()">LOGIN</button>
+        </mat-card-actions>
+        <mat-card-actions *ngIf="user.isAuthorized$ | async" align="end">
+          <button mat-button color="primary" (click)="logout()">LOGOUT</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>

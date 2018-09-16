@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { newTrie, ShiroTrie } from 'shiro-trie';
@@ -13,7 +13,7 @@ export abstract class SubjectPermissionsProvider implements OnDestroy {
 
   abstract getPermissions(): Observable<string[]>;
 
-  constructor() {
+  protected constructor() {
     this.trie = newTrie();
     this.sub = this.getPermissions().subscribe((permissions: string[]) => {
       this.apply(permissions);
@@ -44,13 +44,17 @@ export abstract class SubjectPermissionsProvider implements OnDestroy {
     return this._isPermitted(permission);
   }
 
-  private _isPermitted(permission: string) {
+  protected _isPermitted(permission: string) {
     return this.trie.check(permission);
   }
 }
 
-@Injectable()
-export class SubjectPermissionsFakeProvider extends SubjectPermissionsProvider {
+export class EmptySubjectPermissionsProvider extends SubjectPermissionsProvider {
+
+  constructor() {
+    super();
+  }
+
   getPermissions(): Observable<string[]> {
     return of([]);
   }

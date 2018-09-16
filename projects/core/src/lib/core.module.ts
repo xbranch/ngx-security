@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 
-import { SimpleSubjectProvider, SubjectService } from './subject/subject.service';
+import { SimpleSubjectService, SubjectService } from './subject/subject.service';
 
 export interface SecurityCoreModuleConfig {
   subject?: Provider;
@@ -10,12 +10,20 @@ export interface SecurityCoreModuleConfig {
   imports: []
 })
 export class SecurityCoreModule {
+
   static forRoot(config: SecurityCoreModuleConfig = {}): ModuleWithProviders {
     return {
       ngModule: SecurityCoreModule,
       providers: [
-        config.subject || {provide: SubjectService, useClass: SimpleSubjectProvider}
+        config.subject || {provide: SubjectService, useClass: SimpleSubjectService}
       ]
+    };
+  }
+
+  static forChild(config: SecurityCoreModuleConfig = {}): ModuleWithProviders {
+    return {
+      ngModule: SecurityCoreModule,
+      providers: []
     };
   }
 }

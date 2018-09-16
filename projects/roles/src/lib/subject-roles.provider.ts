@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,30 +9,9 @@ export abstract class SubjectRolesProvider implements OnDestroy {
 
   roles$: Observable<string[]> = this.roles.asObservable();
 
-  static hasRole(subjectRoles: string[], role: string) {
-    if (!subjectRoles || !role) {
-      return false;
-    }
-    return subjectRoles.indexOf(role) >= 0;
-  }
-
-  static hasAnyRole(subjectRoles: string[], roles: string[]) {
-    if (!subjectRoles || !roles) {
-      return false;
-    }
-    return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length > 0;
-  }
-
-  static hasRoles(subjectRoles: string[], roles: string[]) {
-    if (!subjectRoles || !roles) {
-      return false;
-    }
-    return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length === roles.length;
-  }
-
   abstract getRoles(): Observable<string[]>;
 
-  constructor() {
+  protected constructor() {
     this.sub = this.getRoles().subscribe((roles: string[]) => {
       this.apply(roles);
     });
@@ -52,37 +31,62 @@ export abstract class SubjectRolesProvider implements OnDestroy {
 
   hasRoleAsync(role: string): Observable<boolean> {
     return this.roles$.pipe(
-      map((subjectRoles) => SubjectRolesProvider.hasRole(subjectRoles, role))
+      map((subjectRoles) => this._hasRole(role, subjectRoles))
     );
   }
 
   hasAnyRoleAsync(roles: string[]): Observable<boolean> {
     return this.roles$.pipe(
-      map((subjectRoles) => SubjectRolesProvider.hasAnyRole(subjectRoles, roles))
+      map((subjectRoles) => this._hasAnyRole(roles, subjectRoles))
     );
   }
 
   hasRolesAsync(roles: string[]): Observable<boolean> {
     return this.roles$.pipe(
-      map((subjectRoles) => SubjectRolesProvider.hasRoles(subjectRoles, roles))
+      map((subjectRoles) => this._hasRoles(roles, subjectRoles))
     );
   }
 
   hasRole(role: string): boolean {
-    return SubjectRolesProvider.hasRole(this.roles.getValue(), role);
+    return this._hasRole(role);
   }
 
   hasAnyRole(roles: string[]): boolean {
-    return SubjectRolesProvider.hasAnyRole(this.roles.getValue(), roles);
+    return this._hasAnyRole(roles);
   }
 
   hasRoles(roles: string[]): boolean {
-    return SubjectRolesProvider.hasRoles(this.roles.getValue(), roles);
+    return this._hasRoles(roles);
+  }
+
+  protected _hasRole(role: string, subjectRoles: string[] = this.roles.getValue()) {
+    if (!subjectRoles || !role) {
+      return false;
+    }
+    return subjectRoles.indexOf(role) >= 0;
+  }
+
+  protected _hasAnyRole(roles: string[], subjectRoles: string[] = this.roles.getValue()) {
+    if (!subjectRoles || !roles) {
+      return false;
+    }
+    return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length > 0;
+  }
+
+  protected _hasRoles(roles: string[], subjectRoles: string[] = this.roles.getValue()) {
+    if (!subjectRoles || !roles) {
+      return false;
+    }
+    return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length === roles.length;
   }
 }
 
-@Injectable()
-export class SubjectRolesFakeProvider extends SubjectRolesProvider {
+export class EmptySubjectRolesProvider extends SubjectRolesProvider {
+
+  constructor() {
+    super();
+  }
+
   getRoles(): Observable<string[]> {
     return of([]);
   }

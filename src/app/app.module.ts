@@ -4,6 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 import { HighlightModule } from 'ngx-highlightjs';
 
+import { SecurityCoreModule } from '../../projects/core/src/lib/core.module';
 import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
 import { SecurityPermissionsModule } from '../../projects/permissions/src/lib/permissions.module';
 
@@ -26,6 +27,7 @@ import { AppComponent } from './app.component';
       path: 'assets/highlight'
     }),
 
+    SecurityCoreModule.forRoot(),
     SecurityRolesModule.forRoot(),
     SecurityPermissionsModule.forRoot()
   ],

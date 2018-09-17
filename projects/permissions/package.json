@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/permissions",
-  "version": "2.0.1",
+  "version": "2.0.2-snapshot.0",
   "license": "MIT",
   "author": "User <user@xbranch.si>",
   "description": "Angular Security Permissions Module",

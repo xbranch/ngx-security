@@ -23,8 +23,8 @@ import { AppComponent } from './app.component';
     MatIconModule,
 
     HighlightModule.forRoot({
-      theme: 'agate',
-      path: 'assets/highlight'
+      path: 'assets/highlight',
+      theme: 'agate'
     }),
 
     SecurityCoreModule.forRoot(),

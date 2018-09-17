@@ -4,8 +4,10 @@
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="app-name">{{(pageInfo$ | async)?.title}}</h1>
+    <span>{{version}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
+
 <mat-sidenav-container>
   <mat-sidenav #nav mode="side">
     <mat-nav-list>

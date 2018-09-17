@@ -1,6 +1,6 @@
 {
   "name": "ngx-security",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -16,7 +16,9 @@
     "publish:roles": "npm publish ./dist/roles --access public",
     "publish:permissions": "npm publish ./dist/permissions --access public",
     "publish:auth": "npm publish ./dist/auth --access public",
-    "build:lib": "npm run build:core && npm run build:roles && npm run build:permissions && npm run build:auth"
+    "build:lib": "npm run build:core && npm run build:roles && npm run build:permissions",
+    "update:docs": "npm run build && git add -u docs/ && git commit -m 'Update docs app'",
+    "release": "ngitflow release start && npm run update:docs && ngitflow release finish"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +58,7 @@
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^1.3.1",
     "ng-packagr": "^4.1.1",
+    "ngitflow": "^1.0.26",
     "protractor": "^5.4.1",
     "ts-node": "~7.0.1",
     "tsickle": ">=0.29.0",

@@ -3,6 +3,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 
+import { version } from './version';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,6 +12,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 })
 export class AppComponent {
 
+  version = version;
   pageInfo$: Observable<any>;
 
   constructor(router: Router, activatedRoute: ActivatedRoute) {

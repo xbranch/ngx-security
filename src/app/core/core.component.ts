@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { SubjectService } from '../../../projects/core/src/lib/subject/subject.service';
 
@@ -27,7 +27,8 @@ const usageComponentView = `
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
-  styleUrls: ['./core.component.scss']
+  styleUrls: ['./core.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoreComponent implements OnInit {
 
@@ -44,7 +45,7 @@ export class CoreComponent implements OnInit {
     this.user.update({
       authorities: ['ROLE_1', 'ROLE_2', 'ROLE_3'],
       details: {
-        displayName: 'John Snow'
+        displayName: 'Jon Snow'
       }
     });
   }

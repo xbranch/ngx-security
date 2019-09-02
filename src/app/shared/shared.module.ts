@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatIconModule, MatTabsModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { HighlightModule } from 'ngx-highlightjs';
 
 @NgModule({

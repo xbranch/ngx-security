@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 import { SecurityCoreModule } from '../../../projects/core/src/lib/core.module';
 

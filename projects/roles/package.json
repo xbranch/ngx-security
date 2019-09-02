@@ -1,8 +1,8 @@
 {
   "name": "@ngx-security/roles",
-  "version": "2.0.2",
+  "version": "7.0.0",
   "license": "MIT",
-  "author": "User <user@xbranch.si>",
+  "author": "User <developer@xbranch.io>",
   "description": "Angular Security Roles Module",
   "keywords": [
     "angular",
@@ -16,7 +16,7 @@
     "url": "git+https://github.com/xbranch/ngx-security.git"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/common": "^8.0.0-rc.0 || ^8.0.0",
+    "@angular/core": "^8.0.0-rc.0 || ^8.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { SubjectPermissionsProvider } from '../../../projects/permissions/src/lib/subject-permissions.provider';
 
@@ -9,7 +9,8 @@ const isPermittedPipePoetry = `<p *ngIf="'user' | isPermitted:'nas:timeCapsule:w
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss']
+  styleUrls: ['./permissions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PermissionsComponent implements OnInit {
 

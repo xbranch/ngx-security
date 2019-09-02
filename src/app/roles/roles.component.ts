@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -21,7 +22,8 @@ const hasRolesPipePoetry = `<p *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">Thi
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.scss']
+  styleUrls: ['./roles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RolesComponent {
 
@@ -30,7 +32,7 @@ export class RolesComponent {
   roles: string[] = [];
   allRoles: string[] = ['ROLE_1', 'ROLE_2'];
 
-  @ViewChild('rolesInput') rolesInput: ElementRef<HTMLInputElement>;
+  @ViewChild('rolesInput', {static: true}) rolesInput: ElementRef<HTMLInputElement>;
 
   hasRoleStructuralDirective = hasRoleStructuralDirective;
   hasAnyRoleStructuralDirective = hasAnyRoleStructuralDirective;

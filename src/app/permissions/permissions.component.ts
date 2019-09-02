@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-
-import { SubjectPermissionsProvider } from '../../../projects/permissions/src/lib/subject-permissions.provider';
+import {
+  SubjectPermissionsProvider,
+  UpdatableSubjectPermissionsProvider
+} from '../../../projects/permissions/src/lib/subject-permissions.provider';
 
 const isPermittedDirective = `<p *isPermitted="'printer:xpc4000:configure'"></p>`;
 const isPermittedPipe = `<p *ngIf="'nas:timeCapsule:write' | isPermitted"></p>`;
@@ -38,14 +40,19 @@ export class PermissionsComponent implements OnInit {
 </mat-card>
 `;
 
-  constructor(private subject: SubjectPermissionsProvider) {
+  constructor(private subjectPermissionsProvider: SubjectPermissionsProvider) {
   }
 
   ngOnInit() {
-    this.subject.apply([
+    this.update([
       'printer:xpc5000:print',
       'printer:xpc4000:*',
       'nas:timeCapsule,fritzbox:read'
     ]);
+  }
+
+  private update(authorities: string[]): void {
+    (this.subjectPermissionsProvider as UpdatableSubjectPermissionsProvider).update(authorities);
+    this.subjectPermissionsProvider.apply();
   }
 }

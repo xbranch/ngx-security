@@ -4,8 +4,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
-import { SubjectRolesProvider } from '../../../projects/roles/src/lib/subject-roles.provider';
+import { SubjectRolesProvider, UpdatableSubjectRolesProvider } from '../../../projects/roles/src/lib/subject-roles.provider';
 
 const hasRoleStructuralDirective = `<p *hasRole="'ROLE_1'">This should see users with ROLE_1</p>`;
 const hasAnyRoleStructuralDirective = `<p *hasAnyRole="['ROLE_1','ROLE_2']">This should see users with ROLE_1 or ROLE_2</p>`;
@@ -46,7 +45,7 @@ export class RolesComponent {
   hasAnyRolePipePoetry = hasAnyRolePipePoetry;
   hasRolesPipePoetry = hasRolesPipePoetry;
 
-  constructor(private userRoles: SubjectRolesProvider) {
+  constructor(private subjectRolesProvider: SubjectRolesProvider) {
     this.filteredRoles = this.rolesCtrl.valueChanges.pipe(
       startWith(null),
       map((role: string | null) => role ? this.filter(role) : this.allRoles.slice())
@@ -59,7 +58,7 @@ export class RolesComponent {
 
     if ((value || '').trim()) {
       this.roles.push(value.trim());
-      this.userRoles.apply(this.roles.slice());
+      this.update(this.roles.slice());
     }
 
     if (input) {
@@ -74,13 +73,13 @@ export class RolesComponent {
 
     if (index >= 0) {
       this.roles.splice(index, 1);
-      this.userRoles.apply(this.roles.slice());
+      this.update(this.roles.slice());
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.roles.push(event.option.viewValue);
-    this.userRoles.apply(this.roles.slice());
+    this.update(this.roles.slice());
     this.rolesInput.nativeElement.value = '';
     this.rolesCtrl.setValue(null);
   }
@@ -88,5 +87,9 @@ export class RolesComponent {
   private filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.allRoles.filter(role => role.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private update(authorities: string[]): void {
+    (this.subjectRolesProvider as UpdatableSubjectRolesProvider).update(authorities);
   }
 }

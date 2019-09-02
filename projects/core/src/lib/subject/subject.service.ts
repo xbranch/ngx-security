@@ -2,11 +2,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface SubjectDetails {
+export abstract class SubjectDetails {
   displayName: string;
 }
 
-export interface Subject {
+export abstract class Subject {
   credentials: string;
   authorities: string[];
   details: SubjectDetails;
@@ -36,6 +36,11 @@ export abstract class SubjectService<T extends Subject = any> implements OnDestr
 
   getSubject(): T | null {
     return this.subject.getValue();
+  }
+
+  getAuthorities(): string[] {
+    const subject = this.subject.getValue();
+    return subject && subject.authorities || [];
   }
 
   update(subject: T): void {

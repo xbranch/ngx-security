@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 
-import { EmptySubjectPermissionsProvider, SubjectPermissionsProvider } from './subject-permissions.provider';
+import { SubjectPermissionsProvider, UpdatableSubjectPermissionsProvider } from './subject-permissions.provider';
 import { IsPermittedDirective } from './is-permitted/is-permitted.directive';
 import { IsPermittedPipe } from './is-permitted/is-permitted.pipe';
 
@@ -23,7 +23,7 @@ export class SecurityPermissionsModule {
     return {
       ngModule: SecurityPermissionsModule,
       providers: [
-        config.subjectPermissions || {provide: SubjectPermissionsProvider, useClass: EmptySubjectPermissionsProvider}
+        config.subjectPermissions || {provide: SubjectPermissionsProvider, useClass: UpdatableSubjectPermissionsProvider}
       ]
     };
   }

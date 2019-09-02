@@ -1,32 +1,14 @@
-import { OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { OnDestroy } from '@angular/core';
 
-export abstract class SubjectRolesProvider implements OnDestroy {
+export abstract class SubjectRolesProvider {
 
-  private sub: Subscription = null;
-  private roles: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  abstract roles$: Observable<string[]>;
 
-  roles$: Observable<string[]> = this.roles.asObservable();
-
-  abstract getRoles(): Observable<string[]>;
+  abstract getRoles(): string[];
 
   protected constructor() {
-    this.sub = this.getRoles().subscribe((roles: string[]) => {
-      this.apply(roles);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.roles.complete();
-    if (this.sub) {
-      this.sub.unsubscribe();
-      this.sub = null;
-    }
-  }
-
-  apply(roles: string[]) {
-    this.roles.next(roles || []);
   }
 
   hasRoleAsync(role: string): Observable<boolean> {
@@ -59,21 +41,21 @@ export abstract class SubjectRolesProvider implements OnDestroy {
     return this._hasRoles(roles);
   }
 
-  protected _hasRole(role: string, subjectRoles: string[] = this.roles.getValue()) {
+  protected _hasRole(role: string, subjectRoles: string[] = this.getRoles()) {
     if (!subjectRoles || !role) {
       return false;
     }
     return subjectRoles.indexOf(role) >= 0;
   }
 
-  protected _hasAnyRole(roles: string[], subjectRoles: string[] = this.roles.getValue()) {
+  protected _hasAnyRole(roles: string[], subjectRoles: string[] = this.getRoles()) {
     if (!subjectRoles || !roles) {
       return false;
     }
     return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length > 0;
   }
 
-  protected _hasRoles(roles: string[], subjectRoles: string[] = this.roles.getValue()) {
+  protected _hasRoles(roles: string[], subjectRoles: string[] = this.getRoles()) {
     if (!subjectRoles || !roles) {
       return false;
     }
@@ -81,13 +63,25 @@ export abstract class SubjectRolesProvider implements OnDestroy {
   }
 }
 
-export class EmptySubjectRolesProvider extends SubjectRolesProvider {
+export class UpdatableSubjectRolesProvider extends SubjectRolesProvider implements OnDestroy {
+
+  private roles: BehaviorSubject<string[]> = new BehaviorSubject([]);
+
+  roles$: Observable<string[]> = this.roles.asObservable();
 
   constructor() {
     super();
   }
 
-  getRoles(): Observable<string[]> {
-    return of([]);
+  ngOnDestroy(): void {
+    this.roles.complete();
+  }
+
+  getRoles(): string[] {
+    return this.roles.getValue();
+  }
+
+  update(roles: string[]): void {
+    this.roles.next(roles);
   }
 }

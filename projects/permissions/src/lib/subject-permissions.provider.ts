@@ -1,37 +1,23 @@
 import { OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { newTrie, ShiroTrie } from 'shiro-trie';
 
-export abstract class SubjectPermissionsProvider implements OnDestroy {
+export abstract class SubjectPermissionsProvider {
 
   private trie: ShiroTrie;
-  private sub: Subscription = null;
-  private permissions: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
-  permissions$: Observable<string[]> = this.permissions.asObservable();
+  abstract permissions$: Observable<string[]>;
 
-  abstract getPermissions(): Observable<string[]>;
+  abstract getPermissions(): string[];
 
   protected constructor() {
     this.trie = newTrie();
-    this.sub = this.getPermissions().subscribe((permissions: string[]) => {
-      this.apply(permissions);
-    });
   }
 
-  ngOnDestroy(): void {
-    this.permissions.complete();
-    if (this.sub) {
-      this.sub.unsubscribe();
-      this.sub = null;
-    }
-  }
-
-  apply(permissions: string[]) {
+  apply(): void {
     this.trie.reset();
-    this.trie.add(...permissions);
-    this.permissions.next(permissions || []);
+    this.trie.add(...this.getPermissions());
   }
 
   isPermittedAsync(permission: string): Observable<boolean> {
@@ -49,13 +35,26 @@ export abstract class SubjectPermissionsProvider implements OnDestroy {
   }
 }
 
-export class EmptySubjectPermissionsProvider extends SubjectPermissionsProvider {
+export class UpdatableSubjectPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
+
+  private permissions: BehaviorSubject<string[]> = new BehaviorSubject([]);
+
+  permissions$: Observable<string[]> = this.permissions.asObservable();
 
   constructor() {
     super();
+    this.apply();
   }
 
-  getPermissions(): Observable<string[]> {
-    return of([]);
+  ngOnDestroy(): void {
+    this.permissions.complete();
+  }
+
+  getPermissions(): string[] {
+    return this.permissions.getValue();
+  }
+
+  update(permissions: string[]): void {
+    this.permissions.next(permissions);
   }
 }

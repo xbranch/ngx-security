@@ -18,12 +18,14 @@ import { SubjectRolesProvider } from '@ngx-security/roles';
 @Injectable({ providedIn: 'root' })
 export class UserRolesService extends SubjectRolesProvider {
 
+    roles$: Observable<string[]> = this.user.authorities$;
+
     constructor(private user: UserService) {
         super();
     }
 
-    getRoles(): Observable<string[]> {
-        return observableOf(this.user.roles);
+    getRoles(): string[] {
+        return this.user.getAuthorities();
     }
 }
 ```

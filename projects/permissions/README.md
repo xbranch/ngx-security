@@ -18,12 +18,14 @@ import { SubjectPermissionsProvider } from '@ngx-security/permissions';
 @Injectable({ providedIn: 'root' })
 export class UserPermissionsService extends SubjectPermissionsProvider {
 
+    permissions$: Observable<string[]> = this.user.authorities$;
+
     constructor(private user: UserService) {
         super();
     }
 
-    getPermissions(): Observable<string[]> {
-        return observableOf(this.user.permissions);
+    getPermissions(): string[] {
+        return this.user.getAuthorities();
     }
 }
 ```

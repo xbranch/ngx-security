@@ -11,7 +11,7 @@ export interface SecurityCoreModuleConfig {
 })
 export class SecurityCoreModule {
 
-  static forRoot(config: SecurityCoreModuleConfig = {}): ModuleWithProviders {
+  static forRoot(config: SecurityCoreModuleConfig = {}): ModuleWithProviders<SecurityCoreModule> {
     return {
       ngModule: SecurityCoreModule,
       providers: [
@@ -20,7 +20,7 @@ export class SecurityCoreModule {
     };
   }
 
-  static forChild(config: SecurityCoreModuleConfig = {}): ModuleWithProviders {
+  static forChild(config: SecurityCoreModuleConfig = {}): ModuleWithProviders<SecurityCoreModule> {
     return {
       ngModule: SecurityCoreModule,
       providers: []

@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/permissions",
-  "version": "8.0.1",
+  "version": "9.0.0",
   "license": "MIT",
   "author": "User <developer@xbranch.io>",
   "description": "Angular Security Permissions Module",
@@ -19,7 +19,7 @@
     "shiro-trie": "^0.4.8"
   },
   "peerDependencies": {
-    "@angular/common": "^8.0.0-rc.0 || ^8.0.0",
-    "@angular/core": "^8.0.0-rc.0 || ^8.0.0"
+    "@angular/common": "^9.0.0-rc.0 || ^9.0.0",
+    "@angular/core": "^9.0.0-rc.0 || ^9.0.0"
   }
 }

@@ -19,7 +19,7 @@ export interface SecurityPermissionsModuleConfig {
   ]
 })
 export class SecurityPermissionsModule {
-  static forRoot(config: SecurityPermissionsModuleConfig = {}): ModuleWithProviders {
+  static forRoot(config: SecurityPermissionsModuleConfig = {}): ModuleWithProviders<SecurityPermissionsModule> {
     return {
       ngModule: SecurityPermissionsModule,
       providers: [
@@ -28,7 +28,7 @@ export class SecurityPermissionsModule {
     };
   }
 
-  static forChild(config: SecurityPermissionsModuleConfig = {}): ModuleWithProviders {
+  static forChild(config: SecurityPermissionsModuleConfig = {}): ModuleWithProviders<SecurityPermissionsModule> {
     return {
       ngModule: SecurityPermissionsModule,
       providers: []

@@ -1,6 +1,6 @@
 {
   "name": "ngx-security",
-  "version": "9.0.0",
+  "version": "9.0.1-snapshot.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

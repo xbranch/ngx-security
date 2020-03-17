@@ -32,7 +32,7 @@ export interface SecurityRolesModuleConfig {
 })
 export class SecurityRolesModule {
 
-  static forRoot(config: SecurityRolesModuleConfig = {}): ModuleWithProviders {
+  static forRoot(config: SecurityRolesModuleConfig = {}): ModuleWithProviders<SecurityRolesModule> {
     return {
       ngModule: SecurityRolesModule,
       providers: [
@@ -41,7 +41,7 @@ export class SecurityRolesModule {
     };
   }
 
-  static forChild(config: SecurityRolesModuleConfig = {}): ModuleWithProviders {
+  static forChild(config: SecurityRolesModuleConfig = {}): ModuleWithProviders<SecurityRolesModule> {
     return {
       ngModule: SecurityRolesModule,
       providers: []

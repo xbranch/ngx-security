@@ -13,11 +13,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Intercept all requests and append Authorization header with access token if requested url is in whitelisted domains. See
-   * {@link isWhitelistedDomain}
+   * Intercept all requests and append Authorization header with access token if requested url is in whitelisted URLs. See
+   * {@link isWhitelistedUrl}
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isWhitelistedDomain(request)) {
+    if (!this.isWhitelistedUrl(request)) {
       return next.handle(request);
     }
     return this.tokens.getValidAccessToken().pipe(
@@ -28,11 +28,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Check if requested url is whitelisted. Whitelisted domains can be passed via {@link AuthHttpInterceptorOptions.whitelistedDomains}
+   * Check if requested url is whitelisted. Whitelisted URLs can be passed via {@link AuthHttpInterceptorOptions.whitelistedUrls}
    */
-  private isWhitelistedDomain(request: HttpRequest<any>): boolean {
+  private isWhitelistedUrl(request: HttpRequest<any>): boolean {
     const url = request.url;
-    return this.options.whitelistedDomains
+    return this.options.whitelistedUrls
       .findIndex(d => typeof d === 'string' ? d === url : d instanceof RegExp ? d.test(url) : false) > -1;
   }
 }

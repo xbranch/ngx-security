@@ -1,13 +1,13 @@
 export class AuthHttpInterceptorOptions {
   /**
-   * Whitelisted domains where access token will be added as authorization header. By default none domain is whitelisted.
+   * Whitelisted URLs where access token will be added as authorization header. By default none URL is whitelisted.
    * Examples:
    * 1. [new RegExp(".&ast;/my-api.&ast;")]
    * 2. ["https://example.com/my-auth-api/users/me"]
    */
-  whitelistedDomains?: (RegExp | string)[];
+  whitelistedUrls?: (RegExp | string)[];
 
   constructor(opt?: AuthHttpInterceptorOptions) {
-    this.whitelistedDomains = opt && opt.whitelistedDomains || [];
+    this.whitelistedUrls = opt && opt.whitelistedUrls || [];
   }
 }

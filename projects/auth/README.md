@@ -30,7 +30,7 @@ import { AppComponent } from './app.component';
                 useHttpBasicAuth: true
             },
             interceptor: {
-                whitelistedDomains: [new RegExp('.*/my-api.*')]
+                whitelistedUrls: [new RegExp('.*/my-api.*')]
             }
         })
     ],
@@ -85,7 +85,7 @@ import { AppComponent } from './app.component';
                  clientId: 'clientId'
              },
             interceptor: {
-                whitelistedDomains: [new RegExp('.*/my-api.*')]
+                whitelistedUrls: [new RegExp('.*/my-api.*')]
             }
         })
     ],
@@ -150,7 +150,7 @@ import { AppComponent } from './app.component';
                 useHttpBasicAuth: true
             },
             interceptor: {
-                whitelistedDomains: [new RegExp('.*/my-api.*')]
+                whitelistedUrls: [new RegExp('.*/my-api.*')]
             }
         })
     ],
@@ -216,7 +216,7 @@ import { AppComponent } from './app.component';
                 useHttpBasicAuth: true
             },
             interceptor: {
-                whitelistedDomains: [new RegExp('.*/my-api.*')]
+                whitelistedUrls: [new RegExp('.*/my-api.*')]
             }
         })
     ],
@@ -273,7 +273,7 @@ import { AppComponent } from './app.component';
                 useHttpBasicAuth: true
             },
             interceptor: {
-                whitelistedDomains: [new RegExp('.*/my-api.*')]
+                whitelistedUrls: [new RegExp('.*/my-api.*')]
             }
         })
     ],

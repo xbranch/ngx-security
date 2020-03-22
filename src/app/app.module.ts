@@ -75,7 +75,7 @@ export function highlightLanguages() {
         useHttpBasicAuth: true
       },
       interceptor: {
-        whitelistedDomains: [new RegExp('.*/my-api.*')]
+        whitelistedUrls: [new RegExp('.*/my-api.*')]
       }
     })
   ],

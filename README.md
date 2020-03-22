@@ -7,6 +7,7 @@ Angular security modules
 - [@ngx-security/core](projects/core)
 - [@ngx-security/roles](projects/roles)
 - [@ngx-security/permissions](projects/permissions)
+- [@ngx-security/auth](projects/auth)
 
 
 ## Development
@@ -15,6 +16,12 @@ Angular security modules
 
 ```shell script
 npm run start
+``` 
+
+### Build modules
+
+```shell script
+npm run build:lib
 ``` 
 
 ### Release new version

@@ -2,9 +2,9 @@ export class AuthToken {
   /**
    * Access token value
    */
-  access_token: string;
+  accessToken: string;
   /**
-   * Refresh token (available in password and code oauth2 flow)
+   * Refresh token (available in password and authorization-code flow)
    */
-  refresh_token?: string;
+  refreshToken?: string;
 }

@@ -35,8 +35,8 @@ export class PasswordFlowAuthService {
       headers = headers.set('Authorization', 'Basic ' + btoa(`${this.options.clientId}:${this.options.clientSecret}`));
     }
 
-    return this.http.post<AuthToken>(this.options.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.tokens.setTokens(token.access_token, token.refresh_token))
+    return this.http.post<any>(this.options.tokenUrl, params, {headers: headers}).pipe(
+      tap(token => this.tokens.mapAndSetTokens(token))
     );
   }
 

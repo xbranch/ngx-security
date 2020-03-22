@@ -25,6 +25,10 @@ export class TokensService implements OnDestroy {
   constructor(private http: HttpClient, private options: TokensServiceOptions = new TokensServiceOptions()) {
   }
 
+  /**
+   * Clean up
+   * @ignore
+   */
   ngOnDestroy(): void {
     if (this.accessTokenPending) {
       this.accessTokenPending.complete();
@@ -62,6 +66,15 @@ export class TokensService implements OnDestroy {
   setTokens(accessToken: string, refreshToken: string): void {
     this.setAccessToken(accessToken);
     this.setRefreshToken(refreshToken);
+  }
+
+  /**
+   * Use {@link TokensServiceOptions.tokenMapper} and set tokens via {@link setTokens}
+   * @param token
+   */
+  mapAndSetTokens(token: any): void {
+    const authToken: AuthToken = this.options.tokenMapper(token);
+    this.setTokens(authToken.accessToken || null, authToken.refreshToken || null);
   }
 
   /**
@@ -128,7 +141,7 @@ export class TokensService implements OnDestroy {
             }
 
             // obtain new access token
-            return this.refreshTokens(refreshToken).pipe(map(token => token.access_token));
+            return this.refreshTokens(refreshToken).pipe(map(token => token.accessToken));
           }
           // make a call
           return of(accessToken);
@@ -138,7 +151,7 @@ export class TokensService implements OnDestroy {
           return throwError({message: 'Access token is missing', details: 'Refresh token expired - cannot obtain new access token'});
         } else {
           // obtain new access token
-          return this.refreshTokens(refreshToken).pipe(map(token => token.access_token));
+          return this.refreshTokens(refreshToken).pipe(map(token => token.accessToken));
         }
       }),
       finalize(() => this.accessTokenPending.complete())
@@ -169,8 +182,8 @@ export class TokensService implements OnDestroy {
       headers = headers.set('Authorization', 'Basic ' + btoa(`${this.options.clientId}:${this.options.clientSecret}`));
     }
 
-    return this.http.post<AuthToken>(this.options.tokenUrl, params, {headers}).pipe(
-      tap(token => this.setTokens(token.access_token, token.refresh_token))
+    return this.http.post<any>(this.options.tokenUrl, params, {headers}).pipe(
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 
@@ -199,8 +212,8 @@ export class TokensService implements OnDestroy {
       }
     }
 
-    return this.http.post<AuthToken>(this.options.tokenUrl, params, {headers}).pipe(
-      tap(token => this.setTokens(token.access_token, token.refresh_token))
+    return this.http.post<any>(this.options.tokenUrl, params, {headers}).pipe(
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 

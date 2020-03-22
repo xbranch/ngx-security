@@ -29,8 +29,8 @@ export class ClientCredentialsFlowAuthService {
     if (this.options.useHttpBasicAuth) {
       headers = headers.set('Authorization', 'Basic ' + btoa(`${this.options.clientId}:${this.options.clientSecret}`));
     }
-    return this.http.post<AuthToken>(this.options.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.tokens.setAccessToken(token.access_token))
+    return this.http.post<any>(this.options.tokenUrl, params, {headers: headers}).pipe(
+      tap(token => this.tokens.mapAndSetTokens(token))
     );
   }
 

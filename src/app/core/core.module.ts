@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 
 import { SecurityCoreModule } from '../../../projects/core/src/lib/core.module';
 
@@ -12,9 +11,7 @@ import { CoreComponent } from './core.component';
     SharedModule,
     CoreRoutingModule,
 
-    SecurityCoreModule.forChild(),
-
-    MatButtonModule
+    SecurityCoreModule.forChild()
   ],
   declarations: [
     CoreComponent

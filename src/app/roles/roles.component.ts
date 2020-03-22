@@ -47,7 +47,7 @@ export class RolesComponent {
 
   constructor(private subjectRolesProvider: SubjectRolesProvider) {
     this.filteredRoles = this.rolesCtrl.valueChanges.pipe(
-      startWith(null),
+      startWith(null as string),
       map((role: string | null) => role ? this.filter(role) : this.allRoles.slice())
     );
   }

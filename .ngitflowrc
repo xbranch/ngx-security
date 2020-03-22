@@ -2,6 +2,7 @@
   "versionFiles": [
     {"file": "projects/core/package.json", "regex": "(\"version\"\\s*:\\s*\")[\\s\\S]*?\",", "replacement": "$1$VERSION\","},
     {"file": "projects/roles/package.json", "regex": "(\"version\"\\s*:\\s*\")[\\s\\S]*?\",", "replacement": "$1$VERSION\","},
-    {"file": "projects/permissions/package.json", "regex": "(\"version\"\\s*:\\s*\")[\\s\\S]*?\",", "replacement": "$1$VERSION\","}
+    {"file": "projects/permissions/package.json", "regex": "(\"version\"\\s*:\\s*\")[\\s\\S]*?\",", "replacement": "$1$VERSION\","},
+    {"file": "projects/auth/package.json", "regex": "(\"version\"\\s*:\\s*\")[\\s\\S]*?\",", "replacement": "$1$VERSION\","}
   ]
 }

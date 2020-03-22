@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HighlightModule } from 'ngx-highlightjs';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { HighlightModule } from 'ngx-highlightjs';
     MatTabsModule,
     MatCardModule,
     MatIconModule,
+    MatButtonModule,
 
     HighlightModule
   ],
@@ -21,6 +23,7 @@ import { HighlightModule } from 'ngx-highlightjs';
     MatTabsModule,
     MatCardModule,
     MatIconModule,
+    MatButtonModule,
 
     HighlightModule
   ]

@@ -6,11 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { HttpClientModule } from '@angular/common/http';
 import { HighlightModule } from 'ngx-highlightjs';
 
 import { SecurityCoreModule } from '../../projects/core/src/lib/core.module';
 import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
 import { SecurityPermissionsModule } from '../../projects/permissions/src/lib/permissions.module';
+import { SecurityAuthModule } from '../../projects/auth/src/lib/auth.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +33,7 @@ export function highlightLanguages() {
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
 
     MatToolbarModule,
     MatSidenavModule,
@@ -44,7 +47,37 @@ export function highlightLanguages() {
 
     SecurityCoreModule.forRoot(),
     SecurityRolesModule.forRoot(),
-    SecurityPermissionsModule.forRoot()
+    SecurityPermissionsModule.forRoot(),
+    SecurityAuthModule.forRoot({
+      passwordFlow: {
+        tokenUrl: 'tokenUrl',
+        clientId: 'clientId',
+        clientSecret: 'clientSecret',
+        useHttpBasicAuth: true
+      },
+      implicitFlow: {
+        loginUrl: 'loginUrl',
+        clientId: 'clientId'
+      },
+      authorizationCodeFlow: {
+        loginUrl: 'loginUrl',
+        clientId: 'clientId'
+      },
+      clientCredentialsFlow: {
+        tokenUrl: 'tokenUrl',
+        clientId: 'clientId',
+        clientSecret: 'clientSecret',
+      },
+      tokens: {
+        tokenUrl: 'tokenUrl',
+        clientId: 'clientId',
+        clientSecret: 'clientSecret',
+        useHttpBasicAuth: true
+      },
+      interceptor: {
+        whitelistedDomains: [new RegExp('.*/my-api.*')]
+      }
+    })
   ],
   declarations: [
     AppComponent

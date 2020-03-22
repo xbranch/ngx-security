@@ -1,3 +1,107 @@
-<p>
-  auth module is in progress
-</p>
+<mat-tab-group>
+  <mat-tab label="Overview">
+    <br/>
+    <br/>
+    <h2>Installation</h2>
+    <pre><code [highlight]="'npm install --save @ngx-security/auth'"></code></pre>
+    <br/>
+  </mat-tab>
+
+  <mat-tab label="Password flow">
+    <br/>
+    <br/>
+    <h2>Overview</h2>
+    <pre>
++----------+
+| Resource |
+|  Owner   |
+|          |
++----------+
+     v
+     |    Resource Owner
+    (A) Password Credentials
+     |
+     v
++---------+                                  +---------------+
+|         |>--(B)---- Resource Owner ------->|               |
+|         |         Password Credentials     | Authorization |
+| Client  |                                  |     Server    |
+|         |<--(C)---- Access Token ---------<|               |
+|         |    (w/ Optional Refresh Token)   |               |
++---------+                                  +---------------+
+    </pre>
+  </mat-tab>
+
+  <mat-tab label="Implicit flow">
+    <br/>
+    <br/>
+    <h2>Overview</h2>
+    <pre>
++----------+
+| Resource |
+|  Owner   |
+|          |
++----------+
+     ^
+     |
+    (B)
++----|-----+          Client Identifier     +---------------+
+|         -+----(A)-- & Redirection URI --->|               |
+|  User-   |                                | Authorization |
+|  Agent  -|----(B)-- User authenticates -->|     Server    |
+|          |                                |               |
+|          |<---(C)--- Redirection URI ----<|               |
+|          |          with Access Token     +---------------+
+|          |            in Fragment
+|          |                                +---------------+
+|          |----(D)--- Redirection URI ---->|   Web-Hosted  |
+|          |          without Fragment      |     Client    |
+|          |                                |    Resource   |
+|     (F)  |<---(E)------- Script ---------<|               |
+|          |                                +---------------+
++-|--------+
+  |    |
+ (A)  (G) Access Token
+  |    |
+  ^    v
++---------+
+|         |
+|  Client |
+|         |
++---------+
+    </pre>
+  </mat-tab>
+
+  <mat-tab label="Authorization code Flow">
+    <br/>
+    <br/>
+    <h2>Overview</h2>
+    <pre>
++----------+
+| Resource |
+|   Owner  |
+|          |
++----------+
+     ^
+     |
+    (B)
++----|-----+          Client Identifier      +---------------+
+|         -+----(A)-- & Redirection URI ---->|               |
+|  User-   |                                 | Authorization |
+|  Agent  -+----(B)-- User authenticates --->|     Server    |
+|          |                                 |               |
+|         -+----(C)-- Authorization Code ---<|               |
++-|----|---+                                 +---------------+
+  |    |                                         ^      v
+ (A)  (C)                                        |      |
+  |    |                                         |      |
+  ^    v                                         |      |
++---------+                                      |      |
+|         |>---(D)-- Authorization Code ---------'      |
+|  Client |          & Redirection URI                  |
+|         |                                             |
+|         |<---(E)----- Access Token -------------------'
++---------+       (w/ Optional Refresh Token)
+    </pre>
+  </mat-tab>
+</mat-tab-group>

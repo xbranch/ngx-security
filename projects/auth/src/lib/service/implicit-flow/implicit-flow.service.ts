@@ -1,54 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { TokensService } from '../tokens/tokens.service';
-import { AuthorizationCodeFlowOptions } from './authorization-code-flow-options';
-import { AuthToken } from '../tokens/auth-token';
+import { ImplicitFlowOptions } from './implicit-flow-options';
 import { UrlUtil } from '../../util/url.util';
 import { SessionStorageUtil } from '../../util/session-storage.util';
 import { NonceUtil } from '../../util/nonce.util';
+import { AuthFlowType } from '../auth-flow-options';
 
 @Injectable()
-export class AuthorizationCodeFlowAuthService {
+export class ImplicitFlowService {
 
-  constructor(private http: HttpClient, private tokens: TokensService, private options: AuthorizationCodeFlowOptions) {
+  constructor(private tokens: TokensService, private  options: ImplicitFlowOptions) {
   }
 
   /**
-   * Check if current URL contains user partial authorization attributes and fetch tokens.
+   * Check if current URL contains user authorization attributes and save it to session storage.
    *
    * @param authenticateAutomatically: redirect user to login url if user is unauthorized
    */
   initialize(authenticateAutomatically: boolean = false): Observable<{ message: string }> {
     return new Observable(observer => {
       if (this.tokens.hasValidAccessToken()) {
-        observer.next({message: 'Access is still valid'});
+        observer.next({message: 'Access token is still valid'});
         observer.complete();
         return;
       }
 
-      const {code, state, error} = UrlUtil.getCodePartsFromUrl(window.location.search);
-
-      if (!this.options.preventClearHashAfterLogin) {
-        const href = location.href
-          .replace(/[&?]code=[^&$]*/, '')
-          .replace(/[&?]scope=[^&$]*/, '')
-          .replace(/[&?]state=[^&$]*/, '')
-          .replace(/[&?]session_state=[^&$]*/, '');
-
-        history.replaceState(null, window.name, href);
-      }
+      const {access_token, state, error} = UrlUtil.getHashFragmentParams();
 
       if (error) {
         observer.error({message: error});
         return;
       }
 
-      if (!code && !state && authenticateAutomatically) {
-        observer.next({message: 'No code and authenticate automatically is set to true - you will be redirected'});
+      if (!access_token && !state && authenticateAutomatically) {
+        observer.next({message: 'No access token and authenticate automatically is set to true - you will be redirected'});
         observer.complete();
         this.authenticate();
+        return;
+      }
+
+      if (!access_token) {
+        observer.error({message: 'No access token in URL'});
         return;
       }
 
@@ -57,20 +52,19 @@ export class AuthorizationCodeFlowAuthService {
         return;
       }
 
-      if (state !== SessionStorageUtil.get('nonce')) {
+      if (state !== SessionStorageUtil.get<string>('nonce')) {
         observer.error({message: 'Nonce is not valid'});
         return;
       }
 
-      if (!code) {
-        observer.error({message: 'Code is missing'});
-        return;
-      }
+      this.tokens.setAccessToken(access_token, AuthFlowType.IMPLICIT);
 
-      this.getTokenFromCode(code).subscribe(() => {
-        observer.next({message: 'Tokens  saved'});
-        observer.complete();
-      }, observer.error);
+      observer.next({message: 'Access token saved'});
+      observer.complete();
+
+      if (!this.options.preventClearHashAfterLogin) {
+        location.hash = '';
+      }
     });
   }
 
@@ -117,21 +111,5 @@ export class AuthorizationCodeFlowAuthService {
    */
   clear(): void {
     this.tokens.clear();
-  }
-
-  private getTokenFromCode(code: string): Observable<AuthToken> {
-    let params = new HttpParams();
-
-    if (!this.options.disablePKCE) {
-      const pkciVerifier = SessionStorageUtil.get<string>('PKCI_verifier');
-
-      if (!pkciVerifier) {
-        console.warn('No PKCI verifier found in storage!');
-      } else {
-        params = params.set('code_verifier', pkciVerifier);
-      }
-    }
-
-    return this.tokens.fetchTokens(code, params);
   }
 }

@@ -61,18 +61,15 @@ export function highlightLanguages() {
       },
       authorizationCodeFlow: {
         loginUrl: 'loginUrl',
-        clientId: 'clientId'
+        tokenUrl: 'tokenUrl',
+        clientId: 'clientId',
+        clientSecret: 'clientSecret',
+        useHttpBasicAuth: true
       },
       clientCredentialsFlow: {
         tokenUrl: 'tokenUrl',
         clientId: 'clientId',
         clientSecret: 'clientSecret',
-      },
-      tokens: {
-        tokenUrl: 'tokenUrl',
-        clientId: 'clientId',
-        clientSecret: 'clientSecret',
-        useHttpBasicAuth: true
       },
       interceptor: {
         whitelistedUrls: [new RegExp('.*/my-api.*')]

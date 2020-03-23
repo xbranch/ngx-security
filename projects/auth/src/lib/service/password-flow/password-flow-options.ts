@@ -1,4 +1,4 @@
-import { AuthFlowOptions } from '../auth-flow-options';
+import { AuthFlowOptions, AuthFlowType } from '../auth-flow-options';
 
 export class PasswordFlowOptions extends AuthFlowOptions {
   /**
@@ -15,7 +15,7 @@ export class PasswordFlowOptions extends AuthFlowOptions {
   useHttpBasicAuth?: boolean;
 
   constructor(opt?: PasswordFlowOptions) {
-    super(opt as AuthFlowOptions);
+    super(AuthFlowType.PASSWORD, opt as AuthFlowOptions);
     this.tokenUrl = opt && opt.tokenUrl || null;
     this.clientSecret = opt && opt.clientSecret || null;
     this.useHttpBasicAuth = opt && opt.useHttpBasicAuth || null;

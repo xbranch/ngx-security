@@ -5,8 +5,9 @@ import { filter, map, pairwise, take } from 'rxjs/operators';
 import { AuthSubject } from './auth-subject';
 import { AuthSubjectDetails } from './auth-subject-details';
 import { TokensService } from '../tokens/tokens.service';
+import { AuthSubjectServiceOptions } from './auth-subject-service-options';
 import { JwtUtil } from '../../util/jwt.util';
-import { TokensServiceOptions } from '../tokens/tokens-service-options';
+import { AuthFlowType } from '../auth-flow-options';
 
 @Injectable()
 export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestroy {
@@ -29,7 +30,7 @@ export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestr
     map((pair: AuthSubject<T>[]) => pair[1])
   );
 
-  constructor(private tokensService: TokensService, private options: TokensServiceOptions) {
+  constructor(private tokensService: TokensService, private options: AuthSubjectServiceOptions) {
     this.sub = this.tokensService.accessToken$.subscribe(accessToken => {
       this.update(accessToken);
     });
@@ -76,18 +77,18 @@ export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestr
    * Check if user is authenticated. Has valid access token or chance to obtain new
    */
   isAuthenticated(): Observable<boolean> {
-    return combineLatest([this.tokensService.accessToken$, this.tokensService.refreshToken$]).pipe(
+    return combineLatest([this.tokensService.accessToken$, this.tokensService.refreshToken$, this.tokensService.authFlowType$]).pipe(
       take(1),
-      map(([accessToken, refreshToken]) => {
+      map(([accessToken, refreshToken, authFlowType]) => {
         if (!accessToken && !refreshToken) {
           return false;
         }
+        if (authFlowType === AuthFlowType.CLIENT_CREDENTIALS) {
+          return true;
+        }
         if (accessToken) {
           if (JwtUtil.isTokenExpired(accessToken)) {
-            if (!refreshToken) {
-              return false;
-            }
-            return !JwtUtil.isTokenExpired(refreshToken);
+            return refreshToken && !JwtUtil.isTokenExpired(refreshToken);
           }
           return true;
         }
@@ -104,7 +105,7 @@ export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestr
   }
 
   /**
-   * Decode access token to JWT and convert to subject object via {@link TokensServiceOptions.subjectMapper}
+   * Decode access token to JWT and convert to subject object via {@link AuthSubjectServiceOptions.subjectMapper}
    * @ignore
    */
   private update(accessToken: string): void {

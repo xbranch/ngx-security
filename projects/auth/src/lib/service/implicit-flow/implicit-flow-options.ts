@@ -1,4 +1,4 @@
-import { AuthFlowOptions } from '../auth-flow-options';
+import { AuthFlowOptions, AuthFlowType } from '../auth-flow-options';
 
 export class ImplicitFlowOptions extends AuthFlowOptions {
   /**
@@ -15,7 +15,7 @@ export class ImplicitFlowOptions extends AuthFlowOptions {
   preventClearHashAfterLogin?: boolean;
 
   constructor(opt?: ImplicitFlowOptions) {
-    super(opt as AuthFlowOptions);
+    super(AuthFlowType.IMPLICIT, opt as AuthFlowOptions);
     this.loginUrl = opt && opt.loginUrl || null;
     this.responseType = opt && opt.responseType || 'token';
     this.preventClearHashAfterLogin = opt && opt.preventClearHashAfterLogin || false;

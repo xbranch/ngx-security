@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { PasswordFlowAuthService } from '../../../projects/auth/src/lib/service/password-flow/password-flow-auth.service';
-import { ImplicitFlowAuthService } from '../../../projects/auth/src/lib/service/implicit-flow/implicit-flow-auth.service';
-import { AuthorizationCodeFlowAuthService } from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow-auth.service';
+import { PasswordFlowService } from '../../../projects/auth/src/lib/service/password-flow/password-flow.service';
+import { ImplicitFlowService } from '../../../projects/auth/src/lib/service/implicit-flow/implicit-flow.service';
+import { AuthorizationCodeFlowService } from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow.service';
+
 
 @Component({
   selector: 'app-auth',
@@ -12,8 +13,8 @@ import { AuthorizationCodeFlowAuthService } from '../../../projects/auth/src/lib
 })
 export class AuthComponent implements OnInit {
 
-  constructor(private passwordFlowAuthService: PasswordFlowAuthService, private implicitFlowAuthService: ImplicitFlowAuthService,
-              private codeFlowAuthService: AuthorizationCodeFlowAuthService) {
+  constructor(private passwordFlowAuthService: PasswordFlowService, private implicitFlowAuthService: ImplicitFlowService,
+              private codeFlowAuthService: AuthorizationCodeFlowService) {
   }
 
   ngOnInit(): void {

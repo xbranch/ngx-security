@@ -24,12 +24,6 @@ import { AppComponent } from './app.component';
                 clientId: 'clientId',
                 clientSecret: 'clientSecret',
                 useHttpBasicAuth: true
-            },  
-            tokens: {
-                tokenUrl: 'tokenUrl',
-                clientId: 'clientId',
-                clientSecret: 'clientSecret',
-                useHttpBasicAuth: true
             },
             interceptor: {
                 whitelistedUrls: [new RegExp('.*/my-api.*')]
@@ -121,7 +115,8 @@ export class AppComponent implements OnInit {
     }
     
     login(): void {
-        this.implicitFlowAuthService.authenticate();
+        this.implicitFlowAuthService
+            .authenticate();
     }
 }
 ```
@@ -143,9 +138,6 @@ import { AppComponent } from './app.component';
         SecurityAuthModule.forRoot({
             authorizationCodeFlow: {
                 loginUrl: 'loginUrl',
-                clientId: 'clientId'
-            },
-            tokens: {
                 tokenUrl: 'tokenUrl',
                 clientId: 'clientId',
                 clientSecret: 'clientSecret',
@@ -186,7 +178,8 @@ export class AppComponent implements OnInit {
     }
     
     login(): void {
-        this.authorizationCodeFlowAuthService.authenticate();
+        this.authorizationCodeFlowAuthService
+            .authenticate();
     }
 }
 ```
@@ -207,11 +200,6 @@ import { AppComponent } from './app.component';
         HttpClientModule,
         SecurityAuthModule.forRoot({
             clientCredentialsFlow: {
-                tokenUrl: 'tokenUrl',
-                clientId: 'clientId',
-                clientSecret: 'clientSecret',
-            },  
-            tokens: {
                 tokenUrl: 'tokenUrl',
                 clientId: 'clientId',
                 clientSecret: 'clientSecret',
@@ -248,63 +236,6 @@ export class AppComponent {
     login(): void {
         this.clientCredentialsFlowAuthService
             .authenticate()
-            .subscribe(console.log, console.error);
-    }
-}
-```
-
-## Refresh token
-
-Include `SecurityAuthModule` into `AppModule` and provide configuration for tokens and http-interceptor. This is also part of password and authorization-code flow so that's why you need to configure tokens there. 
-
-```typescript
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { SecurityAuthModule } from '@ngx-security/auth';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-    imports: [
-        HttpClientModule,
-        SecurityAuthModule.forRoot({
-            tokens: {
-                tokenUrl: 'tokenUrl',
-                clientId: 'clientId',
-                clientSecret: 'clientSecret',
-                useHttpBasicAuth: true
-            },
-            interceptor: {
-                whitelistedUrls: [new RegExp('.*/my-api.*')]
-            }
-        })
-    ],
-    declarations: [AppComponent],
-    bootstrap: [AppComponent]
-})
-export class AppModule {
-}
-```
-
-Call `refreshTokens` method inside `TokensService` to obtain new access and refresh tokens.
-
-```typescript
-import { Component } from '@angular/core';
-import { TokensService } from '@ngx-security/auth';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
-})
-export class AppComponent {
-
-    constructor(private tokensService: TokensService) {
-    }
-
-    refresh(): void {
-        this.tokensService
-            .refreshTokens('RefreshTokenValue')
             .subscribe(console.log, console.error);
     }
 }

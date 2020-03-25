@@ -6,7 +6,7 @@
 
 ## Password Flow
 
-Include `SecurityAuthModule` into `AppModule` and provide configuration for password-flow, tokens and http-interceptor.
+Include `SecurityAuthModule` into `AppModule` and provide configuration for password-flow and http-interceptor.
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -37,11 +37,11 @@ export class AppModule {
 }
 ```
 
-Call `authenticate` method inside `PasswordFlowAuthService` to obtain access and refresh tokens.
+Call `authenticate` method inside `PasswordFlowService` to obtain access and refresh tokens.
 
 ```typescript
 import { Component } from '@angular/core';
-import { PasswordFlowAuthService } from '@ngx-security/auth';
+import { PasswordFlowService } from '@ngx-security/auth';
 
 @Component({
   selector: 'app-root',
@@ -50,11 +50,11 @@ import { PasswordFlowAuthService } from '@ngx-security/auth';
 })
 export class AppComponent {
 
-    constructor(private passwordFlowAuthService: PasswordFlowAuthService) {
+    constructor(private passwordFlowService: PasswordFlowService) {
     }
 
     login(): void {
-        this.passwordFlowAuthService
+        this.passwordFlowService
             .authenticate('username', 'password')
             .subscribe(console.log, console.error);
     }
@@ -92,11 +92,11 @@ export class AppModule {
 }
 ```
 
-Call `initialize` method on app component initialization phase to check if authorization state is in URL. Calling `authenticate` method inside `ImplicitFlowAuthService` will redirect user to login page.
+Call `initialize` method on app component initialization phase to check if authorization state is in URL. Calling `authenticate` method inside `ImplicitFlowService` will redirect user to login page.
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import { ImplicitFlowAuthService } from '@ngx-security/auth';
+import { ImplicitFlowService } from '@ngx-security/auth';
 
 @Component({
   selector: 'app-root',
@@ -105,17 +105,17 @@ import { ImplicitFlowAuthService } from '@ngx-security/auth';
 })
 export class AppComponent implements OnInit {
 
-    constructor( private implicitFlowAuthService: ImplicitFlowAuthService) {
+    constructor( private implicitFlowService: ImplicitFlowService) {
     }
 
     ngOnInit(): void {
-        this.implicitFlowAuthService
+        this.implicitFlowService
             .initialize()
             .subscribe(console.log, console.error);
     }
     
     login(): void {
-        this.implicitFlowAuthService
+        this.implicitFlowService
             .authenticate();
     }
 }
@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
 
 ## Authorization code Flow
 
-Include `SecurityAuthModule` into `AppModule` and provide configuration for authorization-code-flow, tokens and http-interceptor.
+Include `SecurityAuthModule` into `AppModule` and provide configuration for authorization-code-flow and http-interceptor.
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -155,11 +155,11 @@ export class AppModule {
 }
 ```
 
-Call `initialize` method on app component initialization phase to check if authorization state is in URL. Calling `authenticate` method inside `AuthorizationCodeFlowAuthService` will redirect user to login page.
+Call `initialize` method on app component initialization phase to check if authorization state is in URL. Calling `authenticate` method inside `AuthorizationCodeFlowService` will redirect user to login page.
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import { AuthorizationCodeFlowAuthService } from '@ngx-security/auth';
+import { AuthorizationCodeFlowService } from '@ngx-security/auth';
 
 @Component({
   selector: 'app-root',
@@ -168,17 +168,17 @@ import { AuthorizationCodeFlowAuthService } from '@ngx-security/auth';
 })
 export class AppComponent implements OnInit {
 
-    constructor( private authorizationCodeFlowAuthService: AuthorizationCodeFlowAuthService) {
+    constructor( private authorizationCodeFlowService: AuthorizationCodeFlowService) {
     }
 
     ngOnInit(): void {
-        this.authorizationCodeFlowAuthService
+        this.authorizationCodeFlowService
             .initialize()
             .subscribe(console.log, console.error);
     }
     
     login(): void {
-        this.authorizationCodeFlowAuthService
+        this.authorizationCodeFlowService
             .authenticate();
     }
 }
@@ -186,7 +186,7 @@ export class AppComponent implements OnInit {
 
 ## Client credentials flow
 
-Include `SecurityAuthModule` into `AppModule` and provide configuration for client-credentials-flow, tokens and http-interceptor.
+Include `SecurityAuthModule` into `AppModule` and provide configuration for client-credentials-flow and http-interceptor.
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -217,11 +217,11 @@ export class AppModule {
 }
 ```
 
-Call `authenticate` method inside `ClientCredentialsFlowAuthService` to obtain access tokens.
+Call `authenticate` method inside `ClientCredentialsFlowService` to obtain access tokens.
 
 ```typescript
 import { Component } from '@angular/core';
-import { ClientCredentialsFlowAuthService } from '@ngx-security/auth';
+import { ClientCredentialsFlowService } from '@ngx-security/auth';
 
 @Component({
   selector: 'app-root',
@@ -230,11 +230,11 @@ import { ClientCredentialsFlowAuthService } from '@ngx-security/auth';
 })
 export class AppComponent {
 
-    constructor(private clientCredentialsFlowAuthService: ClientCredentialsFlowAuthService) {
+    constructor(private clientCredentialsFlowService: ClientCredentialsFlowService) {
     }
 
     login(): void {
-        this.clientCredentialsFlowAuthService
+        this.clientCredentialsFlowService
             .authenticate()
             .subscribe(console.log, console.error);
     }
@@ -244,3 +244,76 @@ export class AppComponent {
 ## Clearing state
 
 Each service above has `clear` method which clear app state and persistent storage (session and local). Real implementation of clear method is in `TokenService.clear`.
+
+
+## Custom token mapper
+
+Add tokens configuration at `SecurityAuthModule` import.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { SecurityAuthModule, AuthToken } from '@ngx-security/auth';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+    imports: [
+        HttpClientModule,
+        SecurityAuthModule.forRoot({
+            tokens:{
+                tokenMapper: (token: any): AuthToken => {
+                    token = token || {};
+                    return {
+                        clientId: token['client_id'] || token['clientId'] || null,
+                        accessToken: token['access_token'] || token['accessToken'] || null,
+                        refreshToken: token['refresh_token'] || token['refreshToken'] || null
+                    };
+                }
+            }
+        })
+    ],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+```
+
+## Custom subject mapper
+
+Add subject configuration at `SecurityAuthModule` import.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { SecurityAuthModule, AuthSubject } from '@ngx-security/auth';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+    imports: [
+        HttpClientModule,
+        SecurityAuthModule.forRoot({
+            subject: {
+                subjectMapper: (jwt: any): AuthSubject<any> => {
+                    jwt = jwt || {};
+                    return {
+                        principal: jwt['user_name'] || jwt['username'] || jwt['email'] || null,
+                        authorities: jwt['authorities'] || [],
+                        details: jwt
+                    };
+                }
+            }
+        })
+    ],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+```
+
+## Combine with ngx-security/roles and/or ngx-security/permissions
+ 
+...in progress

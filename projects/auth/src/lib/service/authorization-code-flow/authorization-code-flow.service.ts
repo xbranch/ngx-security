@@ -96,11 +96,14 @@ export class AuthorizationCodeFlowService {
     const nonce = NonceUtil.createAndSaveNonce();
 
     params = (params || new HttpParams())
-      .append('client_id', this.options.clientId)
-      .append('state', nonce)
-      .append('response_type', this.options.responseType)
-      .append('redirect_uri', redirectUri)
-      .append('scope', this.options.scope);
+      .set('client_id', this.options.clientId)
+      .set('state', nonce)
+      .set('response_type', this.options.responseType)
+      .set('redirect_uri', redirectUri);
+
+    if (this.options.scope) {
+      params = params.set('scope', this.options.scope);
+    }
 
     if (this.options.resource) {
       params = params.set('resource', this.options.resource);

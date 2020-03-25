@@ -13,30 +13,30 @@ import { AuthorizationCodeFlowService } from '../../../projects/auth/src/lib/ser
 })
 export class AuthComponent implements OnInit {
 
-  constructor(private passwordFlowAuthService: PasswordFlowService, private implicitFlowAuthService: ImplicitFlowService,
-              private codeFlowAuthService: AuthorizationCodeFlowService) {
+  constructor(private passwordFlowService: PasswordFlowService, private implicitFlowService: ImplicitFlowService,
+              private codeFlowService: AuthorizationCodeFlowService) {
   }
 
   ngOnInit(): void {
-    this.implicitFlowAuthService
+    this.implicitFlowService
       .initialize()
       .subscribe(console.log, console.error);
-    this.codeFlowAuthService
+    this.codeFlowService
       .initialize()
       .subscribe(console.log, console.error);
   }
 
   passwordFlow(): void {
-    this.passwordFlowAuthService
+    this.passwordFlowService
       .authenticate('test@example.com', 'T3st@example.com')
       .subscribe(console.log, console.error);
   }
 
   implicitFlow(): void {
-    this.implicitFlowAuthService.authenticate();
+    this.implicitFlowService.authenticate();
   }
 
   authorizationCodeFlow(): void {
-    this.codeFlowAuthService.authenticate();
+    this.codeFlowService.authenticate();
   }
 }

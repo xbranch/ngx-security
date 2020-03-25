@@ -18,16 +18,13 @@ export class TokensService implements OnDestroy {
 
   private static ACCESS_TOKEN_KEY = 'access_token';
   private static REFRESH_TOKEN_KEY = 'refresh_token';
-  private static AUTH_FLOW_TYPE_KEY = 'auth_flow_type';
 
   private accessToken: BehaviorSubject<string> = new BehaviorSubject(SessionStorageUtil.get(TokensService.ACCESS_TOKEN_KEY));
   private refreshToken: BehaviorSubject<string> = new BehaviorSubject(LocaleStorageUtil.get(TokensService.REFRESH_TOKEN_KEY));
-  private authFlowType: BehaviorSubject<AuthFlowType> = new BehaviorSubject(LocaleStorageUtil.get(TokensService.AUTH_FLOW_TYPE_KEY));
   private accessTokenPending: Subject<void> = null;
 
   accessToken$: Observable<string> = this.accessToken.asObservable();
   refreshToken$: Observable<string> = this.refreshToken.asObservable();
-  authFlowType$: Observable<AuthFlowType> = this.authFlowType.asObservable();
 
   constructor(private http: HttpClient, private options: TokensServiceOptions, private passwordFlowOptions: PasswordFlowOptions,
               private authorizationCodeFlowOptions: AuthorizationCodeFlowOptions,
@@ -44,20 +41,16 @@ export class TokensService implements OnDestroy {
     }
     this.accessToken.complete();
     this.refreshToken.complete();
-    this.authFlowType.complete();
   }
 
   /**
    * Save access token to session storage and update current access token state.
    *
    * @param token: access token
-   * @param type: authentication flow type
    */
-  setAccessToken(token: string, type: AuthFlowType): void {
+  setAccessToken(token: string): void {
     SessionStorageUtil.put(TokensService.ACCESS_TOKEN_KEY, token);
     this.accessToken.next(token);
-    LocaleStorageUtil.put(TokensService.AUTH_FLOW_TYPE_KEY, type);
-    this.authFlowType.next(type);
   }
 
   /**
@@ -74,11 +67,10 @@ export class TokensService implements OnDestroy {
    * Save access token and refresh token with {@link setAccessToken} and {@link setRefreshToken}.
    *
    * @param accessToken
-   * @param type: authentication flow type
    * @param refreshToken
    */
-  setTokens(accessToken: string, type: AuthFlowType, refreshToken: string): void {
-    this.setAccessToken(accessToken, type);
+  setTokens(accessToken: string, refreshToken: string): void {
+    this.setAccessToken(accessToken);
     this.setRefreshToken(refreshToken);
   }
 
@@ -96,8 +88,26 @@ export class TokensService implements OnDestroy {
     return this.refreshToken.getValue();
   }
 
-  getAuthenticationFlowType(): AuthFlowType {
-    return this.authFlowType.getValue();
+  /**
+   * Return authentication flow type of current access token
+   */
+  getAuthenticationFlowType(accessToken: string = this.getAccessToken()): AuthFlowType | null {
+    if (!accessToken) {
+      return null;
+    }
+    const token: AuthToken = JwtUtil.decodeToken(accessToken);
+    const clientId = token.clientId;
+    if (clientId) {
+      return null;
+    }
+    if (this.passwordFlowOptions.clientId === clientId) {
+      return AuthFlowType.PASSWORD;
+    } else if (this.authorizationCodeFlowOptions.clientId === clientId) {
+      return AuthFlowType.AUTHORIZATION_CODE;
+    } else if (this.clientCredentialsFlowOptions.clientId === clientId) {
+      return AuthFlowType.CLIENT_CREDENTIALS;
+    }
+    return null;
   }
 
   /**
@@ -131,16 +141,16 @@ export class TokensService implements OnDestroy {
 
     this.accessTokenPending = new Subject();
 
-    return combineLatest([this.accessToken$, this.refreshToken$, this.authFlowType$]).pipe(
+    return combineLatest([this.accessToken$, this.refreshToken$]).pipe(
       take(1),
-      mergeMap(([accessToken, refreshToken, authFlowType]) => {
+      mergeMap(([accessToken, refreshToken]) => {
         if (!accessToken && !refreshToken) {
           return throwError({message: 'Authentication token is missing'});
         }
         if (accessToken) {
           if (JwtUtil.isTokenExpired(accessToken)) {
 
-            if (authFlowType === AuthFlowType.CLIENT_CREDENTIALS) {
+            if (this.getAuthenticationFlowType(accessToken) === AuthFlowType.CLIENT_CREDENTIALS) {
               return this.authenticateWithClientCredentials().pipe(map(token => token.accessToken));
             }
 
@@ -194,7 +204,7 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(this.passwordFlowOptions.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.mapAndSetTokens(token, AuthFlowType.PASSWORD))
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 
@@ -250,7 +260,7 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(tokenUrl, params, {headers}).pipe(
-      tap(token => this.mapAndSetTokens(token, this.getAuthenticationFlowType()))
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 
@@ -281,7 +291,7 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(this.authorizationCodeFlowOptions.tokenUrl, params, {headers}).pipe(
-      tap(token => this.mapAndSetTokens(token, AuthFlowType.AUTHORIZATION_CODE))
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 
@@ -304,7 +314,7 @@ export class TokensService implements OnDestroy {
         .set('Authorization', `Basic ${btoa(`${this.clientCredentialsFlowOptions.clientId}:${this.clientCredentialsFlowOptions.clientSecret}`)}`);
     }
     return this.http.post<any>(this.clientCredentialsFlowOptions.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.mapAndSetTokens(token, AuthFlowType.CLIENT_CREDENTIALS))
+      tap(token => this.mapAndSetTokens(token))
     );
   }
 
@@ -321,11 +331,10 @@ export class TokensService implements OnDestroy {
   /**
    * Use {@link TokensServiceOptions.tokenMapper} and set tokens via {@link setTokens}
    * @param token
-   * @param type: authentication flow type
    * @ignore
    */
-  private mapAndSetTokens(token: any, type: AuthFlowType): void {
+  private mapAndSetTokens(token: any): void {
     const authToken: AuthToken = this.options.tokenMapper(token);
-    this.setTokens(authToken.accessToken || null, type, authToken.refreshToken || null);
+    this.setTokens(authToken.accessToken || null, authToken.refreshToken || null);
   }
 }

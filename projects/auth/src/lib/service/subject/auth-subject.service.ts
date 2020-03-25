@@ -77,16 +77,16 @@ export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestr
    * Check if user is authenticated. Has valid access token or chance to obtain new
    */
   isAuthenticated(): Observable<boolean> {
-    return combineLatest([this.tokensService.accessToken$, this.tokensService.refreshToken$, this.tokensService.authFlowType$]).pipe(
+    return combineLatest([this.tokensService.accessToken$, this.tokensService.refreshToken$]).pipe(
       take(1),
-      map(([accessToken, refreshToken, authFlowType]) => {
+      map(([accessToken, refreshToken]) => {
         if (!accessToken && !refreshToken) {
           return false;
         }
-        if (authFlowType === AuthFlowType.CLIENT_CREDENTIALS) {
-          return true;
-        }
         if (accessToken) {
+          if (this.tokensService.getAuthenticationFlowType(accessToken) === AuthFlowType.CLIENT_CREDENTIALS) {
+            return true;
+          }
           if (JwtUtil.isTokenExpired(accessToken)) {
             return refreshToken && !JwtUtil.isTokenExpired(refreshToken);
           }

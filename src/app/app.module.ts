@@ -20,6 +20,8 @@ import { AppComponent } from './app.component';
 import xml from 'highlight.js/lib/languages/xml';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
+import { AuthToken } from '../../projects/auth/src/lib/service/tokens/auth-token';
+import { AuthSubject } from '../../projects/auth/src/lib/service/subject/auth-subject';
 
 export function highlightLanguages() {
   return [
@@ -70,6 +72,26 @@ export function highlightLanguages() {
         tokenUrl: 'tokenUrl',
         clientId: 'clientId',
         clientSecret: 'clientSecret',
+      },
+      tokens: {
+        tokenMapper: (token: any): AuthToken => {
+          token = token || {};
+          return {
+            clientId: token['client_id'] || token['clientId'] || null,
+            accessToken: token['access_token'] || token['accessToken'] || null,
+            refreshToken: token['refresh_token'] || token['refreshToken'] || null
+          };
+        }
+      },
+      subject: {
+        subjectMapper: (jwt: any): AuthSubject<any> => {
+          jwt = jwt || {};
+          return {
+            principal: jwt['user_name'] || jwt['username'] || jwt['email'] || null,
+            authorities: jwt['authorities'] || [],
+            details: jwt
+          };
+        }
       },
       interceptor: {
         whitelistedUrls: [new RegExp('.*/my-api.*')]

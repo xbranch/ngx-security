@@ -7,7 +7,6 @@ import { ImplicitFlowOptions } from './implicit-flow-options';
 import { UrlUtil } from '../../util/url.util';
 import { SessionStorageUtil } from '../../util/session-storage.util';
 import { NonceUtil } from '../../util/nonce.util';
-import { AuthFlowType } from '../auth-flow-options';
 
 @Injectable()
 export class ImplicitFlowService {
@@ -57,7 +56,7 @@ export class ImplicitFlowService {
         return;
       }
 
-      this.tokens.setAccessToken(access_token, AuthFlowType.IMPLICIT);
+      this.tokens.setAccessToken(access_token);
 
       observer.next({message: 'Access token saved'});
       observer.complete();
@@ -90,11 +89,14 @@ export class ImplicitFlowService {
     const nonce = NonceUtil.createAndSaveNonce();
 
     params = (params || new HttpParams())
-      .append('client_id', this.options.clientId)
-      .append('state', nonce)
-      .append('response_type', this.options.responseType)
-      .append('redirect_uri', redirectUri)
-      .append('scope', this.options.scope);
+      .set('client_id', this.options.clientId)
+      .set('state', nonce)
+      .set('response_type', this.options.responseType)
+      .set('redirect_uri', redirectUri);
+
+    if (this.options.scope) {
+      params = params.set('scope', this.options.scope);
+    }
 
     if (this.options.resource) {
       params = params.set('resource', this.options.resource);

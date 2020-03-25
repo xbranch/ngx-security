@@ -1,5 +1,9 @@
 export class AuthToken {
   /**
+   * Client id
+   */
+  clientId: string;
+  /**
    * Access token value
    */
   accessToken: string;

@@ -3,6 +3,7 @@ import { AuthToken } from './auth-token';
 function defaultTokenMapper(token: any): AuthToken {
   token = token || {};
   return {
+    clientId: token['client_id'] || token['clientId'] || null,
     accessToken: token['access_token'] || token['accessToken'] || null,
     refreshToken: token['refresh_token'] || token['refreshToken'] || null
   };

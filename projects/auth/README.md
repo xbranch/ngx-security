@@ -253,7 +253,7 @@ Add tokens configuration at `SecurityAuthModule` import.
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { SecurityAuthModule, AuthToken } from '@ngx-security/auth';
+import { SecurityAuthModule, AuthTokens } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
 
@@ -262,12 +262,11 @@ import { AppComponent } from './app.component';
         HttpClientModule,
         SecurityAuthModule.forRoot({
             tokens:{
-                tokenMapper: (token: any): AuthToken => {
-                    token = token || {};
+                mapper: (tokens: any): AuthTokens => {
+                    tokens = tokens || {};
                     return {
-                        clientId: token['client_id'] || token['clientId'] || null,
-                        accessToken: token['access_token'] || token['accessToken'] || null,
-                        refreshToken: token['refresh_token'] || token['refreshToken'] || null
+                        accessToken: tokens['access_token'] || tokens['accessToken'] || null,
+                        refreshToken: tokens['refresh_token'] || tokens['refreshToken'] || null
                     };
                 }
             }
@@ -296,7 +295,7 @@ import { AppComponent } from './app.component';
         HttpClientModule,
         SecurityAuthModule.forRoot({
             subject: {
-                subjectMapper: (jwt: any): AuthSubject<any> => {
+                mapper: (jwt: any): AuthSubject<any> => {
                     jwt = jwt || {};
                     return {
                         principal: jwt['user_name'] || jwt['username'] || jwt['email'] || null,

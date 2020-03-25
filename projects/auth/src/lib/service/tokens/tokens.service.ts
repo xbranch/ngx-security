@@ -7,11 +7,11 @@ import { TokensServiceOptions } from './tokens-service-options';
 import { SessionStorageUtil } from '../../util/session-storage.util';
 import { LocaleStorageUtil } from '../../util/locale-storage.util';
 import { JwtUtil } from '../../util/jwt.util';
-import { AuthToken } from './auth-token';
 import { AuthFlowType } from '../auth-flow-options';
 import { ClientCredentialsFlowOptions } from '../client-credentials-flow/client-credentials-flow-options';
 import { PasswordFlowOptions } from '../password-flow/password-flow-options';
 import { AuthorizationCodeFlowOptions } from '../authorization-code-flow/authorization-code-flow-options';
+import { AuthTokens } from './auth-tokens';
 
 @Injectable()
 export class TokensService implements OnDestroy {
@@ -147,7 +147,7 @@ export class TokensService implements OnDestroy {
           if (JwtUtil.isTokenExpired(accessToken)) {
 
             if (this.getAuthenticationFlowType(accessToken) === AuthFlowType.CLIENT_CREDENTIALS) {
-              return this.authenticateWithClientCredentials().pipe(map(token => token.accessToken));
+              return this.authenticateWithClientCredentials().pipe(map(tokens => tokens.accessToken));
             }
 
             if (!refreshToken) {
@@ -159,7 +159,7 @@ export class TokensService implements OnDestroy {
             }
 
             // obtain new access token
-            return this.authenticateWithRefreshToken(refreshToken).pipe(map(token => token.accessToken));
+            return this.authenticateWithRefreshToken(refreshToken).pipe(map(tokens => tokens.accessToken));
           }
           return of(accessToken);
         }
@@ -168,7 +168,7 @@ export class TokensService implements OnDestroy {
           return throwError({message: 'Access token is missing', details: 'Refresh token expired - cannot obtain new access token'});
         } else {
           // obtain new access token
-          return this.authenticateWithRefreshToken(refreshToken).pipe(map(token => token.accessToken));
+          return this.authenticateWithRefreshToken(refreshToken).pipe(map(tokens => tokens.accessToken));
         }
       }),
       finalize(() => this.accessTokenPending.complete())
@@ -184,7 +184,7 @@ export class TokensService implements OnDestroy {
    * @param headers: additional headers
    */
   authenticateWithPassword(username: string, password: string, params: HttpParams = new HttpParams(),
-                           headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+                           headers: HttpHeaders = new HttpHeaders()): Observable<AuthTokens> {
     params = (params || new HttpParams())
       .set('username', username)
       .set('password', password)
@@ -199,7 +199,8 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(this.passwordFlowOptions.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.mapAndSetTokens(token))
+      map(tokens => this.transform(tokens)),
+      tap(token => this.setTokens(token.accessToken || null, token.refreshToken || null))
     );
   }
 
@@ -211,7 +212,7 @@ export class TokensService implements OnDestroy {
    * @param headers: additional parameters
    */
   authenticateWithRefreshToken(refreshToken: string, params: HttpParams = new HttpParams(),
-                               headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+                               headers: HttpHeaders = new HttpHeaders()): Observable<AuthTokens> {
     if (!refreshToken) {
       return throwError({message: 'Refresh token must not be empty'});
     }
@@ -259,7 +260,8 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(tokenUrl, params, {headers}).pipe(
-      tap(token => this.mapAndSetTokens(token))
+      map(tokens => this.transform(tokens)),
+      tap(token => this.setTokens(token.accessToken || null, token.refreshToken || null))
     );
   }
 
@@ -271,7 +273,7 @@ export class TokensService implements OnDestroy {
    * @param headers: additional parameters
    */
   authenticateWithAuthorizationCode(code: string, params: HttpParams = new HttpParams(),
-                                    headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+                                    headers: HttpHeaders = new HttpHeaders()): Observable<AuthTokens> {
     params = (params || new HttpParams())
       .set('grant_type', 'authorization_code')
       .set('code', code);
@@ -290,7 +292,8 @@ export class TokensService implements OnDestroy {
     }
 
     return this.http.post<any>(this.authorizationCodeFlowOptions.tokenUrl, params, {headers}).pipe(
-      tap(token => this.mapAndSetTokens(token))
+      map(tokens => this.transform(tokens)),
+      tap(token => this.setTokens(token.accessToken || null, token.refreshToken || null))
     );
   }
 
@@ -301,7 +304,7 @@ export class TokensService implements OnDestroy {
    * @param headers: additional headers
    */
   authenticateWithClientCredentials(params: HttpParams = new HttpParams(),
-                                    headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+                                    headers: HttpHeaders = new HttpHeaders()): Observable<AuthTokens> {
     params = (params || new HttpParams())
       .set('grant_type', 'client_credentials');
 
@@ -313,7 +316,8 @@ export class TokensService implements OnDestroy {
         .set('Authorization', `Basic ${btoa(`${this.clientCredentialsFlowOptions.clientId}:${this.clientCredentialsFlowOptions.clientSecret}`)}`);
     }
     return this.http.post<any>(this.clientCredentialsFlowOptions.tokenUrl, params, {headers: headers}).pipe(
-      tap(token => this.mapAndSetTokens(token))
+      map(tokens => this.transform(tokens)),
+      tap(token => this.setTokens(token.accessToken || null, token.refreshToken || null))
     );
   }
 
@@ -328,12 +332,11 @@ export class TokensService implements OnDestroy {
   }
 
   /**
-   * Use {@link TokensServiceOptions.tokenMapper} and set tokens via {@link setTokens}
-   * @param token
+   * Transform tokens {@link TokensServiceOptions.mapper}
+   * @param tokens
    * @ignore
    */
-  private mapAndSetTokens(token: any): void {
-    const authToken: AuthToken = this.options.tokenMapper(token);
-    this.setTokens(authToken.accessToken || null, authToken.refreshToken || null);
+  private transform(tokens: any): AuthTokens {
+    return this.options.mapper(tokens);
   }
 }

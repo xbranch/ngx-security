@@ -105,12 +105,12 @@ export class AuthSubjectService<T extends AuthSubjectDetails> implements OnDestr
   }
 
   /**
-   * Decode access token to JWT and convert to subject object via {@link AuthSubjectServiceOptions.subjectMapper}
+   * Decode access token to JWT and convert to subject object via {@link AuthSubjectServiceOptions.mapper}
    * @ignore
    */
   private update(accessToken: string): void {
     const jwt = JwtUtil.decodeToken(accessToken);
-    const subject: AuthSubject<any> = this.options.subjectMapper(jwt);
+    const subject: AuthSubject<any> = this.options.mapper(jwt);
     this.subject.next(subject);
   }
 }

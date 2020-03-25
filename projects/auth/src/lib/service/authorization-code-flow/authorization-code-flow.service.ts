@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { TokensService } from '../tokens/tokens.service';
 import { AuthorizationCodeFlowOptions } from './authorization-code-flow-options';
-import { AuthToken } from '../tokens/auth-token';
+import { AuthTokens } from '../tokens/auth-tokens';
 import { UrlUtil } from '../../util/url.util';
 import { SessionStorageUtil } from '../../util/session-storage.util';
 import { NonceUtil } from '../../util/nonce.util';
@@ -122,7 +122,7 @@ export class AuthorizationCodeFlowService {
     this.tokens.clear();
   }
 
-  private getTokenFromCode(code: string): Observable<AuthToken> {
+  private getTokenFromCode(code: string): Observable<AuthTokens> {
     let params = new HttpParams();
 
     if (!this.options.disablePKCE) {

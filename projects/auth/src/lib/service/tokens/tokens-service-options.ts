@@ -1,21 +1,20 @@
-import { AuthToken } from './auth-token';
+import { AuthTokens } from './auth-tokens';
 
-function defaultTokenMapper(token: any): AuthToken {
-  token = token || {};
+function defaultMapper(tokens: any): AuthTokens {
+  tokens = tokens || {};
   return {
-    clientId: token['client_id'] || token['clientId'] || null,
-    accessToken: token['access_token'] || token['accessToken'] || null,
-    refreshToken: token['refresh_token'] || token['refreshToken'] || null
+    accessToken: tokens['access_token'] || tokens['accessToken'] || null,
+    refreshToken: tokens['refresh_token'] || tokens['refreshToken'] || null
   };
 }
 
 export class TokensServiceOptions {
   /**
-   * Token mapper. Default is {@link defaultTokenMapper}
+   * Token mapper. Default is {@link defaultMapper}
    */
-  tokenMapper?: (token: any) => AuthToken;
+  mapper?: (tokens: any) => AuthTokens;
 
   constructor(opt?: TokensServiceOptions) {
-    this.tokenMapper = opt && opt.tokenMapper || defaultTokenMapper;
+    this.mapper = opt && opt.mapper || defaultMapper;
   }
 }

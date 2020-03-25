@@ -18,6 +18,6 @@ export class PasswordFlowOptions extends AuthFlowOptions {
     super(AuthFlowType.PASSWORD, opt as AuthFlowOptions);
     this.tokenUrl = opt && opt.tokenUrl || null;
     this.clientSecret = opt && opt.clientSecret || null;
-    this.useHttpBasicAuth = opt && opt.useHttpBasicAuth || null;
+    this.useHttpBasicAuth = opt && opt.useHttpBasicAuth || true;
   }
 }

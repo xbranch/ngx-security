@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { TokensService } from '../tokens/tokens.service';
-import { AuthToken } from '../tokens/auth-token';
+import { AuthTokens } from '../tokens/auth-tokens';
 
 @Injectable()
 export class ClientCredentialsFlowService {
@@ -17,7 +17,7 @@ export class ClientCredentialsFlowService {
    * @param params: additional parameters
    * @param headers: additional headers
    */
-  authenticate(params: HttpParams = new HttpParams(), headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+  authenticate(params: HttpParams = new HttpParams(), headers: HttpHeaders = new HttpHeaders()): Observable<AuthTokens> {
     return this.tokens.authenticateWithClientCredentials(params, headers);
   }
 

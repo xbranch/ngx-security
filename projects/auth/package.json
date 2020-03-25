@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/auth",
-  "version": "9.0.1-snapshot.2",
+  "version": "9.0.1-snapshot.4",
   "license": "MIT",
   "author": "developer@xbranch.io",
   "description": "Angular Security Auth Module",

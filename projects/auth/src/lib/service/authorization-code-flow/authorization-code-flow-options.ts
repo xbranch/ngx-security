@@ -32,7 +32,7 @@ export class AuthorizationCodeFlowOptions extends AuthFlowOptions {
     this.loginUrl = opt && opt.loginUrl || null;
     this.tokenUrl = opt && opt.tokenUrl || null;
     this.clientSecret = opt && opt.clientSecret || null;
-    this.useHttpBasicAuth = opt && opt.useHttpBasicAuth || null;
+    this.useHttpBasicAuth = opt && opt.useHttpBasicAuth || true;
     this.responseType = opt && opt.responseType || 'code';
     this.preventClearHashAfterLogin = opt && opt.preventClearHashAfterLogin || false;
     this.disablePKCE = opt && opt.disablePKCE || null;

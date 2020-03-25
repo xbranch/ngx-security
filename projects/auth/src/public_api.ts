@@ -8,7 +8,7 @@ export * from './lib/util/locale-storage.util';
 export * from './lib/util/session-storage.util';
 export * from './lib/util/nonce.util';
 export * from './lib/util/url.util';
-export * from './lib/service/tokens/auth-token';
+export * from './lib/service/tokens/auth-tokens';
 export * from './lib/service/tokens/tokens-service-options';
 export * from './lib/service/tokens/tokens.service';
 export * from './lib/service/auth-flow-options';

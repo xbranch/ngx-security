@@ -20,8 +20,8 @@ import { AppComponent } from './app.component';
 import xml from 'highlight.js/lib/languages/xml';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
-import { AuthToken } from '../../projects/auth/src/lib/service/tokens/auth-token';
 import { AuthSubject } from '../../projects/auth/src/lib/service/subject/auth-subject';
+import { AuthTokens } from 'auth';
 
 export function highlightLanguages() {
   return [
@@ -74,17 +74,16 @@ export function highlightLanguages() {
         clientSecret: 'clientSecret',
       },
       tokens: {
-        tokenMapper: (token: any): AuthToken => {
-          token = token || {};
+        mapper: (tokens: any): AuthTokens => {
+          tokens = tokens || {};
           return {
-            clientId: token['client_id'] || token['clientId'] || null,
-            accessToken: token['access_token'] || token['accessToken'] || null,
-            refreshToken: token['refresh_token'] || token['refreshToken'] || null
+            accessToken: tokens['access_token'] || tokens['accessToken'] || null,
+            refreshToken: tokens['refresh_token'] || tokens['refreshToken'] || null
           };
         }
       },
       subject: {
-        subjectMapper: (jwt: any): AuthSubject<any> => {
+        mapper: (jwt: any): AuthSubject<any> => {
           jwt = jwt || {};
           return {
             principal: jwt['user_name'] || jwt['username'] || jwt['email'] || null,

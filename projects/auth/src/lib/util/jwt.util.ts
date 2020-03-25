@@ -65,4 +65,19 @@ export class JwtUtil {
 
     return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
   }
+
+  /**
+   * Get JWT token client id
+   *
+   * @param token: JWT string
+   */
+  static getTokenClientId(token: string): string | null {
+    const decoded: any = JwtUtil.decodeToken(token);
+
+    if (!decoded || !decoded.hasOwnProperty('client_id')) {
+      return null;
+    }
+
+    return decoded.client_id;
+  }
 }

@@ -91,13 +91,9 @@ export class TokensService implements OnDestroy {
   /**
    * Return authentication flow type of current access token
    */
-  getAuthenticationFlowType(accessToken: string = this.getAccessToken()): AuthFlowType | null {
-    if (!accessToken) {
-      return null;
-    }
-    const token: AuthToken = JwtUtil.decodeToken(accessToken);
-    const clientId = token.clientId;
-    if (clientId) {
+  getAuthenticationFlowType(token: string = this.getAccessToken()): AuthFlowType | null {
+    const clientId: string = JwtUtil.getTokenClientId(token);
+    if (!clientId) {
       return null;
     }
     if (this.passwordFlowOptions.clientId === clientId) {
@@ -165,7 +161,6 @@ export class TokensService implements OnDestroy {
             // obtain new access token
             return this.authenticateWithRefreshToken(refreshToken).pipe(map(token => token.accessToken));
           }
-          // make a call
           return of(accessToken);
         }
 
@@ -217,6 +212,10 @@ export class TokensService implements OnDestroy {
    */
   authenticateWithRefreshToken(refreshToken: string, params: HttpParams = new HttpParams(),
                                headers: HttpHeaders = new HttpHeaders()): Observable<AuthToken> {
+    if (!refreshToken) {
+      return throwError({message: 'Refresh token must not be empty'});
+    }
+
     params = (params || new HttpParams())
       .set('grant_type', 'refresh_token')
       .set('refresh_token', refreshToken);
@@ -228,7 +227,7 @@ export class TokensService implements OnDestroy {
     let clientId: string = null;
     let clientSecret: string = null;
     let useHttpBasicAuth: boolean = null;
-    switch (this.getAuthenticationFlowType()) {
+    switch (this.getAuthenticationFlowType(refreshToken)) {
       case AuthFlowType.PASSWORD:
         tokenUrl = this.passwordFlowOptions.tokenUrl;
         clientId = this.passwordFlowOptions.clientId;
@@ -252,7 +251,7 @@ export class TokensService implements OnDestroy {
     }
 
     if (!tokenUrl) {
-      throwError({message: 'Refresh token not supported'});
+      return throwError({message: 'Refresh token not supported'});
     }
 
     if (clientSecret && useHttpBasicAuth) {

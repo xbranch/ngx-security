@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, combineLatest, Observable, of, Subject, throwError } from 'rxjs';
-import { finalize, map, mergeMap, skipUntil, take, tap } from 'rxjs/operators';
+import { finalize, last, map, mergeMap, take, tap } from 'rxjs/operators';
 
 import { TokensServiceOptions } from './tokens-service-options';
 import { SessionStorageUtil } from '../../util/session-storage.util';
@@ -132,13 +132,12 @@ export class TokensService implements OnDestroy {
    */
   getValidAccessToken(): Observable<string> {
     if (this.accessTokenPending && !this.accessTokenPending.isStopped) {
-      return this.accessToken$.pipe(skipUntil(this.accessTokenPending), take(1));
+      return this.accessTokenPending.pipe(last(), mergeMap(() => this.accessToken$.pipe(take(1))));
     }
 
     this.accessTokenPending = new Subject();
 
     return combineLatest([this.accessToken$, this.refreshToken$]).pipe(
-      take(1),
       mergeMap(([accessToken, refreshToken]) => {
         if (!accessToken && !refreshToken) {
           return throwError({message: 'Authentication token is missing'});
@@ -171,7 +170,11 @@ export class TokensService implements OnDestroy {
           return this.authenticateWithRefreshToken(refreshToken).pipe(map(tokens => tokens.accessToken));
         }
       }),
-      finalize(() => this.accessTokenPending.complete())
+      take(1),
+      finalize(() => {
+        this.accessTokenPending.next();
+        this.accessTokenPending.complete();
+      })
     );
   }
 

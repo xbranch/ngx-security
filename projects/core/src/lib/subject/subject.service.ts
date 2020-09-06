@@ -12,12 +12,45 @@ export abstract class Subject {
   details: SubjectDetails;
 }
 
+export abstract class SubjectService<T extends Subject = any> {
+  abstract subject$: Observable<T | null>;
+  abstract authorities$: Observable<string[] | null>;
+  abstract details$: Observable<SubjectDetails | null>;
+  abstract displayName$: Observable<string | null>;
+  abstract isAuthorized$: Observable<boolean>;
+
+  abstract getSubject(): T | null;
+
+  protected abstract setSubject(subject: T | null): void;
+
+  getAuthorities(): string[] {
+    const subject = this.getSubject();
+    return subject && subject.authorities || [];
+  }
+
+  update(subject: T): void {
+    subject.credentials = null;
+    this.setSubject(subject);
+  }
+
+  updateDetails(subjectDetails: SubjectDetails): void {
+    const subject = {...<any>this.getSubject()};
+    subject.details = subjectDetails;
+    this.setSubject(subject);
+  }
+
+  clear(): void {
+    this.setSubject(null);
+  }
+}
+
 @Injectable()
-export abstract class SubjectService<T extends Subject = any> implements OnDestroy {
+export class StandardSubjectService<T extends Subject = any> extends SubjectService<T> implements OnDestroy {
 
   private subject: BehaviorSubject<T> = new BehaviorSubject<T>(null);
 
   subject$: Observable<T | null> = this.subject.asObservable();
+
   authorities$: Observable<string[] | null> = this.subject$.pipe(
     map(subject => subject && subject.authorities || null)
   );
@@ -39,29 +72,7 @@ export abstract class SubjectService<T extends Subject = any> implements OnDestr
     return this.subject.getValue();
   }
 
-  getAuthorities(): string[] {
-    const subject = this.subject.getValue();
-    return subject && subject.authorities || [];
-  }
-
-  update(subject: T): void {
-    subject.credentials = null;
+  protected setSubject(subject: T | null) {
     this.subject.next(subject);
   }
-
-  updateDetails(subjectDetails: SubjectDetails): void {
-    const subject = {...<any>this.getSubject()};
-    subject.details = subjectDetails;
-    this.subject.next(subject);
-  }
-
-  clear(): void {
-    this.subject.next(null);
-  }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SimpleSubjectService extends SubjectService {
 }

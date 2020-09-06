@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 
-import { SimpleSubjectService, SubjectService } from './subject/subject.service';
+import { StandardSubjectService, SubjectService } from './subject/subject.service';
 
 export interface SecurityCoreModuleConfig {
   subject?: Provider;
@@ -15,7 +15,7 @@ export class SecurityCoreModule {
     return {
       ngModule: SecurityCoreModule,
       providers: [
-        config.subject || {provide: SubjectService, useClass: SimpleSubjectService}
+        config.subject || {provide: SubjectService, useClass: StandardSubjectService}
       ]
     };
   }

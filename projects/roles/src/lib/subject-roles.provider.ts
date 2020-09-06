@@ -63,9 +63,7 @@ export abstract class SubjectRolesProvider {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UpdatableSubjectRolesProvider extends SubjectRolesProvider implements OnDestroy {
 
   private roles: BehaviorSubject<string[]> = new BehaviorSubject([]);

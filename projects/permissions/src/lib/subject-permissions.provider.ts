@@ -35,9 +35,7 @@ export abstract class SubjectPermissionsProvider {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UpdatableSubjectPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
 
   private permissions: BehaviorSubject<string[]> = new BehaviorSubject([]);

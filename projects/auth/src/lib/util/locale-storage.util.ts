@@ -20,7 +20,12 @@ export class LocaleStorageUtil {
     if (!item) {
       return null;
     }
-    return JSON.parse(item);
+    try {
+      return JSON.parse(item);
+    } catch (ex) {
+      console.warn(`Cannot parse ${key} as JSON`, ex);
+      return item as any;
+    }
   }
 
   /**

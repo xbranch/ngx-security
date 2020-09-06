@@ -12,6 +12,7 @@ export abstract class Subject {
   details: SubjectDetails;
 }
 
+@Injectable()
 export abstract class SubjectService<T extends Subject = any> implements OnDestroy {
 
   private subject: BehaviorSubject<T> = new BehaviorSubject<T>(null);
@@ -59,6 +60,8 @@ export abstract class SubjectService<T extends Subject = any> implements OnDestr
   }
 }
 
-@Injectable()
-export class SimpleSubjectService extends SubjectService<any> {
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleSubjectService extends SubjectService {
 }

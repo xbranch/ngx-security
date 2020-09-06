@@ -1,6 +1,6 @@
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OnDestroy } from '@angular/core';
 
 export abstract class SubjectRolesProvider {
 
@@ -63,6 +63,9 @@ export abstract class SubjectRolesProvider {
   }
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class UpdatableSubjectRolesProvider extends SubjectRolesProvider implements OnDestroy {
 
   private roles: BehaviorSubject<string[]> = new BehaviorSubject([]);

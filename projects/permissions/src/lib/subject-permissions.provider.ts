@@ -1,4 +1,4 @@
-import { OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { newTrie, ShiroTrie } from 'shiro-trie';
@@ -35,6 +35,9 @@ export abstract class SubjectPermissionsProvider {
   }
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class UpdatableSubjectPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
 
   private permissions: BehaviorSubject<string[]> = new BehaviorSubject([]);

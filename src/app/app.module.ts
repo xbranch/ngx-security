@@ -7,29 +7,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
-import { HighlightModule } from 'ngx-highlightjs';
+import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 
 import { SecurityCoreModule } from '../../projects/core/src/lib/core.module';
 import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
 import { SecurityPermissionsModule } from '../../projects/permissions/src/lib/permissions.module';
 import { SecurityAuthModule } from '../../projects/auth/src/lib/auth.module';
+import { AuthSubject } from '../../projects/auth/src/lib/service/subject/auth-subject';
+import { AuthTokens } from '../../projects/auth/src/lib/service/tokens/auth-tokens';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import xml from 'highlight.js/lib/languages/xml';
-import scss from 'highlight.js/lib/languages/scss';
-import typescript from 'highlight.js/lib/languages/typescript';
-import { AuthSubject } from '../../projects/auth/src/lib/service/subject/auth-subject';
-import { AuthTokens } from 'auth';
-
-export function highlightLanguages() {
-  return [
-    {name: 'typescript', func: typescript},
-    {name: 'scss', func: scss},
-    {name: 'xml', func: xml}
-  ];
-}
 
 @NgModule({
   imports: [
@@ -43,9 +31,7 @@ export function highlightLanguages() {
     MatButtonModule,
     MatIconModule,
 
-    HighlightModule.forRoot({
-      languages: highlightLanguages
-    }),
+    HighlightModule,
 
     SecurityCoreModule.forRoot(),
     SecurityRolesModule.forRoot(),
@@ -101,7 +87,18 @@ export function highlightLanguages() {
     AppComponent
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        coreLibraryLoader: () => import('highlight.js/lib/highlight'),
+        languages: {
+          typescript: () => import('highlight.js/lib/languages/typescript'),
+          scss: () => import('highlight.js/lib/languages/scss'),
+          xml: () => import('highlight.js/lib/languages/xml')
+        }
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

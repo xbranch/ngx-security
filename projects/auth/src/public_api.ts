@@ -20,8 +20,6 @@ export * from './lib/service/authorization-code-flow/authorization-code-flow-opt
 export * from './lib/service/authorization-code-flow/authorization-code-flow.service';
 export * from './lib/service/client-credentials-flow/client-credentials-flow-options';
 export * from './lib/service/client-credentials-flow/client-credentials-flow.service';
-export * from './lib/service/subject/auth-subject-details';
-export * from './lib/service/subject/auth-subject';
 export * from './lib/service/subject/auth-subject.service';
 export * from './lib/interceptor/auth-http-interceptor-options';
 export * from './lib/interceptor/auth-http.interceptor';

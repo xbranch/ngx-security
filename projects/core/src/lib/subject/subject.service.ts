@@ -6,34 +6,35 @@ export abstract class SubjectDetails {
   displayName: string;
 }
 
-export abstract class Subject {
+export abstract class Subject<D extends SubjectDetails> {
+  principal: string;
   credentials: string;
   authorities: string[];
-  details: SubjectDetails;
+  details: D;
 }
 
-export abstract class SubjectService<T extends Subject = any> {
-  abstract subject$: Observable<T | null>;
+export abstract class SubjectService<D extends SubjectDetails, S extends Subject<D> = any> {
+  abstract subject$: Observable<S | null>;
   abstract authorities$: Observable<string[] | null>;
-  abstract details$: Observable<SubjectDetails | null>;
+  abstract details$: Observable<D | null>;
   abstract displayName$: Observable<string | null>;
   abstract isAuthorized$: Observable<boolean>;
 
-  abstract getSubject(): T | null;
+  abstract getSubject(): S | null;
 
-  protected abstract setSubject(subject: T | null): void;
+  protected abstract setSubject(subject: S | null): void;
 
   getAuthorities(): string[] {
     const subject = this.getSubject();
     return subject && subject.authorities || [];
   }
 
-  update(subject: T): void {
+  update(subject: S): void {
     subject.credentials = null;
     this.setSubject(subject);
   }
 
-  updateDetails(subjectDetails: SubjectDetails): void {
+  updateDetails(subjectDetails: D): void {
     const subject = {...<any>this.getSubject()};
     subject.details = subjectDetails;
     this.setSubject(subject);
@@ -45,16 +46,16 @@ export abstract class SubjectService<T extends Subject = any> {
 }
 
 @Injectable()
-export class StandardSubjectService<T extends Subject = any> extends SubjectService<T> implements OnDestroy {
+export class StandardSubjectService<D extends SubjectDetails, S extends Subject<D>> extends SubjectService<D, S> implements OnDestroy {
 
-  private subject: BehaviorSubject<T> = new BehaviorSubject<T>(null);
+  private subject: BehaviorSubject<S> = new BehaviorSubject<S>(null);
 
-  subject$: Observable<T | null> = this.subject.asObservable();
+  subject$: Observable<S | null> = this.subject.asObservable();
 
   authorities$: Observable<string[] | null> = this.subject$.pipe(
     map(subject => subject && subject.authorities || null)
   );
-  details$: Observable<SubjectDetails | null> = this.subject$.pipe(
+  details$: Observable<D | null> = this.subject$.pipe(
     map(subject => subject && subject.details || null)
   );
   displayName$: Observable<string | null> = this.details$.pipe(
@@ -68,11 +69,11 @@ export class StandardSubjectService<T extends Subject = any> extends SubjectServ
     this.subject.complete();
   }
 
-  getSubject(): T | null {
+  getSubject(): S | null {
     return this.subject.getValue();
   }
 
-  protected setSubject(subject: T | null) {
+  protected setSubject(subject: S | null) {
     this.subject.next(subject);
   }
 }

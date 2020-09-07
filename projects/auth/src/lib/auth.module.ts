@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { Subject, SubjectDetails, SubjectService } from '@ngx-security/core';
 
 import { AuthHttpInterceptor } from './interceptor/auth-http.interceptor';
 import { TokensService } from './service/tokens/tokens.service';
@@ -16,13 +17,13 @@ import { ImplicitFlowService } from './service/implicit-flow/implicit-flow.servi
 import { AuthorizationCodeFlowService } from './service/authorization-code-flow/authorization-code-flow.service';
 import { ClientCredentialsFlowService } from './service/client-credentials-flow/client-credentials-flow.service';
 
-export interface SecurityAuthModuleConfig {
+export interface SecurityAuthModuleConfig<D extends SubjectDetails, S extends Subject<D>> {
   tokens?: TokensServiceOptions;
   passwordFlow?: PasswordFlowOptions;
   implicitFlow?: ImplicitFlowOptions;
   authorizationCodeFlow?: AuthorizationCodeFlowOptions;
   clientCredentialsFlow?: ClientCredentialsFlowOptions;
-  subject?: AuthSubjectServiceOptions;
+  subject?: AuthSubjectServiceOptions<D, S>;
   interceptor?: AuthHttpInterceptorOptions;
 }
 
@@ -57,7 +58,8 @@ export function clientCredentialsFlowFactory(): (tokens: TokensService) => Clien
   return factory;
 }
 
-export function authSubjectFactory(options: AuthSubjectServiceOptions): (tokens: TokensService) => AuthSubjectService<any> {
+export function authSubjectFactory<D extends SubjectDetails, S extends Subject<D>>(options: AuthSubjectServiceOptions<D, S>)
+  : (tokens: TokensService) => AuthSubjectService<D, S> {
   const factory = (tokens: TokensService) => new AuthSubjectService(tokens, new AuthSubjectServiceOptions(options));
   return factory;
 }
@@ -71,7 +73,8 @@ export function interceptorFactory(options: AuthHttpInterceptorOptions): (tokens
 @NgModule()
 export class SecurityAuthModule {
 
-  static forRoot(config: SecurityAuthModuleConfig = {}): ModuleWithProviders<SecurityAuthModule> {
+  static forRoot<D extends SubjectDetails, S extends Subject<D>>(config: SecurityAuthModuleConfig<D, S> = {})
+    : ModuleWithProviders<SecurityAuthModule> {
     return {
       ngModule: SecurityAuthModule,
       providers: [
@@ -101,7 +104,7 @@ export class SecurityAuthModule {
           deps: [TokensService]
         },
         {
-          provide: AuthSubjectService,
+          provide: SubjectService,
           useFactory: authSubjectFactory(config.subject),
           deps: [TokensService]
         },

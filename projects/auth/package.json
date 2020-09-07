@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/auth",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "license": "MIT",
   "author": "developer@xbranch.io",
   "description": "Angular Security Auth Module",
@@ -23,6 +23,7 @@
   },
   "peerDependencies": {
     "@angular/common": "^10.0.0-rc.0 || ^10.0.0",
-    "@angular/core": "^10.0.0-rc.0 || ^10.0.0"
+    "@angular/core": "^10.0.0-rc.0 || ^10.0.0",
+    "@ngx-security/core": "^10.0.0-snapshot.0 || ^10.0.0"
   }
 }

@@ -2,7 +2,7 @@
 
 ## Installation
 
-```
+```shell script
 npm install --save @ngx-security/core
 ```
 
@@ -10,7 +10,7 @@ npm install --save @ngx-security/core
 
 Import `SecurityCoreModule` in app module.
 
-```
+```typescript
 @NgModule({
   imports: [
     BrowserModule,
@@ -25,7 +25,7 @@ export class AppModule {
 ## Usage
 
 ### SubjectService
-```
+```typescript
 import { Component } from '@angular/core';
 import { SubjectService } from '@ngx-security/core';
 
@@ -40,7 +40,8 @@ export class AppComponent {
     }
 }
 ```
-```
+
+```html
 <h3>{{user.displayName$ | async}}</h3>
 <h5>{{user.authorities$ | async | json}}</h5>
 ```

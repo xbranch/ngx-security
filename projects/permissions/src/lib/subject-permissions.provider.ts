@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { SubjectService } from '@ngx-security/core';
+import { Subject, SubjectDetails, SubjectService } from '@ngx-security/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { newTrie, ShiroTrie } from 'shiro-trie';
@@ -37,11 +37,11 @@ export abstract class SubjectPermissionsProvider {
 }
 
 @Injectable()
-export class StandardSubjectPermissionsProvider extends SubjectPermissionsProvider {
+export class StandardSubjectPermissionsProvider<D extends SubjectDetails, S extends Subject<D>> extends SubjectPermissionsProvider {
 
   permissions$: Observable<string[]> = this.subject.authorities$;
 
-  constructor(private subject: SubjectService) {
+  constructor(private subject: SubjectService<D, S>) {
     super();
   }
 

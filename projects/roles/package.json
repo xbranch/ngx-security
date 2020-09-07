@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/roles",
-  "version": "9.0.1-snapshot.0",
+  "version": "10.0.0",
   "license": "MIT",
   "author": "User <developer@xbranch.io>",
   "description": "Angular Security Roles Module",

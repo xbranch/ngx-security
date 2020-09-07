@@ -4,6 +4,12 @@
 
 ...in progress
 
+## Installation
+
+```shell script
+npm install --save @ngx-security/core @ngx-security/auth
+```
+
 ## Password Flow
 
 Include `SecurityAuthModule` into `AppModule` and provide configuration for password-flow and http-interceptor.
@@ -245,7 +251,6 @@ export class AppComponent {
 
 Each service above has `clear` method which clear app state and persistent storage (session and local). Real implementation of clear method is in `TokenService.clear`.
 
-
 ## Custom token mapper
 
 Add tokens configuration at `SecurityAuthModule` import.
@@ -315,4 +320,35 @@ export class AppModule {
 
 ## Combine with ngx-security/roles and/or ngx-security/permissions
  
-...in progress
+### Install
+
+```shell script
+npm install --save @ngx-security/roles
+```
+or
+
+```shell script
+npm install --save @ngx-security/permissions
+```
+
+### `@ngx-security/roles` example
+
+#### Import module
+
+```typescript
+@NgModule({
+  imports: [
+    BrowserModule,
+    SecurityRolesModule.forRoot()
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+```
+
+#### Usage
+
+```html
+<p *hasRole="'ROLE_1'">This should see users with ROLE_1</p>
+```

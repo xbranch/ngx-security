@@ -7,7 +7,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -20,29 +20,29 @@
       "dom"
     ],
     "paths": {
-      "roles": [
-        "dist/roles"
-      ],
-      "roles/*": [
-        "dist/roles/*"
-      ],
-      "auth": [
-        "dist/auth"
-      ],
-      "auth/*": [
-        "dist/auth/*"
-      ],
-      "core": [
+      "@ngx-security/core": [
         "dist/core"
       ],
-      "core/*": [
+      "@ngx-security/core/*": [
         "dist/core/*"
       ],
-      "permissions": [
+      "@ngx-security/permissions": [
         "dist/permissions"
       ],
-      "permissions/*": [
+      "@ngx-security/permissions/*": [
         "dist/permissions/*"
+      ],
+      "@ngx-security/roles": [
+        "dist/roles"
+      ],
+      "@ngx-security/roles/*": [
+        "dist/roles/*"
+      ],
+      "@ngx-security/auth": [
+        "dist/auth"
+      ],
+      "@ngx-security/auth/*": [
+        "dist/auth/*"
       ]
     }
   }

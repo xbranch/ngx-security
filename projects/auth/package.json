@@ -1,8 +1,28 @@
 {
   "name": "@ngx-security/auth",
-  "version": "0.0.1",
+  "version": "10.0.0",
+  "license": "MIT",
+  "author": "developer@xbranch.io",
+  "description": "Angular Security Auth Module",
+  "keywords": [
+    "oauth",
+    "oauth2",
+    "jwt",
+    "angular",
+    "security",
+    "auth",
+    "authorization",
+    "authentication"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xbranch/ngx-security.git"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
-    "@angular/common": "^9.0.0-rc.0 || ^9.0.0",
-    "@angular/core": "^9.0.0-rc.0 || ^9.0.0"
+    "@angular/common": "^10.0.0-rc.0 || ^10.0.0",
+    "@angular/core": "^10.0.0-rc.0 || ^10.0.0"
   }
 }

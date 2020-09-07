@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/permissions",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "license": "MIT",
   "author": "User <developer@xbranch.io>",
   "description": "Angular Security Permissions Module",
@@ -16,10 +16,12 @@
     "url": "git+https://github.com/xbranch/ngx-security.git"
   },
   "dependencies": {
-    "shiro-trie": "^0.4.8"
+    "shiro-trie": "^0.4.9",
+    "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^9.0.0-rc.0 || ^9.0.0",
-    "@angular/core": "^9.0.0-rc.0 || ^9.0.0"
+    "@angular/common": "^10.0.0-rc.0 || ^10.0.0",
+    "@angular/core": "^10.0.0-rc.0 || ^10.0.0",
+    "@ngx-security/core": "^10.0.0-snapshot.0 || ^10.0.0"
   }
 }

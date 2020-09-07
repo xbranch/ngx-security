@@ -147,9 +147,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/roles/ng-package.prod.json"
-            ,              "tsConfig": "projects/roles/tsconfig.lib.prod.json"
-}
+              "project": "projects/roles/ng-package.prod.json",
+              "tsConfig": "projects/roles/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -188,9 +188,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/auth/ng-package.prod.json"
-            ,              "tsConfig": "projects/auth/tsconfig.lib.prod.json"
-}
+              "project": "projects/auth/ng-package.prod.json",
+              "tsConfig": "projects/auth/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -229,9 +229,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/core/ng-package.prod.json"
-            ,              "tsConfig": "projects/core/tsconfig.lib.prod.json"
-}
+              "project": "projects/core/ng-package.prod.json",
+              "tsConfig": "projects/core/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -270,9 +270,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/permissions/ng-package.prod.json"
-            ,              "tsConfig": "projects/permissions/tsconfig.lib.prod.json"
-}
+              "project": "projects/permissions/ng-package.prod.json",
+              "tsConfig": "projects/permissions/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {

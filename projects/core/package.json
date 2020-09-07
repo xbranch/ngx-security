@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/core",
-  "version": "9.0.1-snapshot.0",
+  "version": "10.0.0",
   "dependencies": {
     "tslib": "^2.0.0"
   },

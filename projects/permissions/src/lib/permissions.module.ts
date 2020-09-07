@@ -1,10 +1,12 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
+import { StandardSubjectService, SubjectService } from '@ngx-security/core';
 
-import { SubjectPermissionsProvider, UpdatableSubjectPermissionsProvider } from './subject-permissions.provider';
+import { StandardSubjectPermissionsProvider, SubjectPermissionsProvider } from './subject-permissions.provider';
 import { IsPermittedDirective } from './is-permitted/is-permitted.directive';
 import { IsPermittedPipe } from './is-permitted/is-permitted.pipe';
 
 export interface SecurityPermissionsModuleConfig {
+  subject?: Provider;
   subjectPermissions?: Provider;
 }
 
@@ -23,7 +25,8 @@ export class SecurityPermissionsModule {
     return {
       ngModule: SecurityPermissionsModule,
       providers: [
-        config.subjectPermissions || {provide: SubjectPermissionsProvider, useClass: UpdatableSubjectPermissionsProvider}
+        config.subject || {provide: SubjectService, useClass: StandardSubjectService},
+        config.subjectPermissions || {provide: SubjectPermissionsProvider, useClass: StandardSubjectPermissionsProvider}
       ]
     };
   }

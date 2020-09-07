@@ -18,6 +18,11 @@ import { AuthTokens } from '../../projects/auth/src/lib/service/tokens/auth-toke
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SubjectRolesProvider, UpdatableSubjectRolesProvider } from '../../projects/roles/src/lib/subject-roles.provider';
+import {
+  SubjectPermissionsProvider,
+  UpdatableSubjectPermissionsProvider
+} from '../../projects/permissions/src/lib/subject-permissions.provider';
 
 @NgModule({
   imports: [
@@ -34,8 +39,12 @@ import { AppComponent } from './app.component';
     HighlightModule,
 
     SecurityCoreModule.forRoot(),
-    SecurityRolesModule.forRoot(),
-    SecurityPermissionsModule.forRoot(),
+    SecurityRolesModule.forRoot({
+      subjectRoles: {provide: SubjectRolesProvider, useClass: UpdatableSubjectRolesProvider}
+    }),
+    SecurityPermissionsModule.forRoot({
+      subjectPermissions: {provide: SubjectPermissionsProvider, useClass: UpdatableSubjectPermissionsProvider}
+    }),
     SecurityAuthModule.forRoot({
       passwordFlow: {
         tokenUrl: 'tokenUrl',

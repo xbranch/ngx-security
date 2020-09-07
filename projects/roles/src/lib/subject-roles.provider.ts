@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { SubjectService } from '@ngx-security/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -60,6 +61,20 @@ export abstract class SubjectRolesProvider {
       return false;
     }
     return subjectRoles.filter((subjectRole) => roles.indexOf(subjectRole) >= 0).length === roles.length;
+  }
+}
+
+@Injectable()
+export class StandardSubjectRolesProvider extends SubjectRolesProvider {
+
+  roles$: Observable<string[]> = this.subject.authorities$;
+
+  constructor(private subject: SubjectService) {
+    super();
+  }
+
+  getRoles(): string[] {
+    return this.subject.getAuthorities();
   }
 }
 

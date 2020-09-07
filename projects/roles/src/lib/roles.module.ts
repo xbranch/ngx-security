@@ -1,4 +1,5 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
+import { StandardSubjectService, SubjectService } from '@ngx-security/core';
 
 import { HasAnyRoleDirective } from './has-any-role/has-any-role.directive';
 import { HasRoleDirective } from './has-role/has-role.directive';
@@ -6,9 +7,10 @@ import { HasRolePipe } from './has-role/has-role.pipe';
 import { HasAnyRolePipe } from './has-any-role/has-any-role.pipe';
 import { HasRolesPipe } from './has-roles/has-roles.pipe';
 import { HasRolesDirective } from './has-roles/has-roles.directive';
-import { SubjectRolesProvider, UpdatableSubjectRolesProvider } from './subject-roles.provider';
+import { StandardSubjectRolesProvider, SubjectRolesProvider } from './subject-roles.provider';
 
 export interface SecurityRolesModuleConfig {
+  subject?: Provider;
   subjectRoles?: Provider;
 }
 
@@ -36,7 +38,8 @@ export class SecurityRolesModule {
     return {
       ngModule: SecurityRolesModule,
       providers: [
-        config.subjectRoles || {provide: SubjectRolesProvider, useClass: UpdatableSubjectRolesProvider}
+        config.subject || {provide: SubjectService, useClass: StandardSubjectService},
+        config.subjectRoles || {provide: SubjectRolesProvider, useClass: StandardSubjectRolesProvider}
       ]
     };
   }

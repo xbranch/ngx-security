@@ -13,7 +13,6 @@ import { SecurityCoreModule } from '../../projects/core/src/lib/core.module';
 import { SecurityRolesModule } from '../../projects/roles/src/lib/roles.module';
 import { SecurityPermissionsModule } from '../../projects/permissions/src/lib/permissions.module';
 import { SecurityAuthModule } from '../../projects/auth/src/lib/auth.module';
-import { AuthSubject } from '../../projects/auth/src/lib/service/subject/auth-subject';
 import { AuthTokens } from '../../projects/auth/src/lib/service/tokens/auth-tokens';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +22,7 @@ import {
   SubjectPermissionsProvider,
   UpdatableSubjectPermissionsProvider
 } from '../../projects/permissions/src/lib/subject-permissions.provider';
+import { Subject } from '../../projects/core/src/lib/subject/subject.service';
 
 @NgModule({
   imports: [
@@ -78,13 +78,13 @@ import {
         }
       },
       subject: {
-        mapper: (jwt: any): AuthSubject<any> => {
+        mapper: (jwt: any): Subject<any> => {
           jwt = jwt || {};
           return {
             principal: jwt['user_name'] || jwt['username'] || jwt['email'] || null,
             authorities: jwt['authorities'] || [],
             details: jwt
-          };
+          } as Subject<any>;
         }
       },
       interceptor: {

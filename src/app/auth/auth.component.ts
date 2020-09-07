@@ -4,7 +4,6 @@ import { PasswordFlowService } from '../../../projects/auth/src/lib/service/pass
 import { ImplicitFlowService } from '../../../projects/auth/src/lib/service/implicit-flow/implicit-flow.service';
 import { AuthorizationCodeFlowService } from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow.service';
 
-
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',

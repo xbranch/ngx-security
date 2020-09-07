@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { SubjectService } from '../../../projects/core/src/lib/subject/subject.service';
 
@@ -30,18 +30,15 @@ const usageComponentView = `
   styleUrls: ['./core.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoreComponent implements OnInit {
+export class CoreComponent {
 
   usageComponentController = usageComponentController;
   usageComponentView = usageComponentView;
 
-  constructor(public user: SubjectService) {
+  constructor(public user: SubjectService<any>) {
   }
 
-  ngOnInit() {
-  }
-
-  login() {
+  login(): void {
     this.user.update({
       authorities: ['ROLE_1', 'ROLE_2', 'ROLE_3'],
       details: {
@@ -50,7 +47,7 @@ export class CoreComponent implements OnInit {
     });
   }
 
-  logout() {
+  logout(): void {
     this.user.clear();
   }
 }

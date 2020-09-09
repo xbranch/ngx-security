@@ -86,7 +86,7 @@ import { Subject } from '../../projects/core/src/lib/subject/subject.service';
             details: jwt
           } as Subject<any>;
         }
-      },
+      } as any,
       interceptor: {
         whitelistedUrls: [new RegExp('.*/my-api.*')]
       }

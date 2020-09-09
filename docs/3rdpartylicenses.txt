@@ -95,6 +95,7 @@ MIT
 MIT
 
 @ngx-security/core
+MIT
 
 @ngx-security/permissions
 MIT

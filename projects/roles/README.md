@@ -8,37 +8,14 @@ npm install --save @ngx-security/core @ngx-security/roles
 
 ## Setup
 
-Implement custom UserRolesService which extends lib's `SubjectRolesProvider` class
-
-```typescript
-import { Injectable } from '@angular/core';
-import { Observable , of as observableOf } from 'rxjs';
-import { SubjectRolesProvider } from '@ngx-security/roles';
-
-@Injectable({ providedIn: 'root' })
-export class UserRolesService extends SubjectRolesProvider {
-
-    roles$: Observable<string[]> = this.user.authorities$;
-
-    constructor(private user: UserService) {
-        super();
-    }
-
-    getRoles(): string[] {
-        return this.user.getAuthorities();
-    }
-}
-```
-
-Import `SecurityRolesModule` in app module and set your custom `SubjectRolesProvider`.
+Import `SecurityCoreModule` and `SecurityRolesModule` in app module.
 
 ````typescript
 @NgModule({
   imports: [
     BrowserModule,
-    SecurityRolesModule.forRoot({
-        subjectRoles: { provide: SubjectRolesProvider, useClass: UserRolesService }
-    })
+    SecurityCoreModule.forRoot(),
+    SecurityRolesModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
@@ -46,7 +23,7 @@ export class AppModule {
 }
 ````
 
-Now you are ready to use it.
+Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch/ngx-security/tree/develop/projects/core) for `SubjectService` implementation which provide authorities as roles.
 
 ## Usage
 
@@ -82,3 +59,51 @@ Now you are ready to use it.
 ```html
 <p *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">This should see users with ROLE_1 and ROLE_2</p>`
 ```
+
+
+## Advance setup
+
+Implement custom custom `SubjectRolesProvider` class:
+
+```typescript
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SubjectRolesProvider } from '@ngx-security/roles';
+
+@Injectable({ providedIn: 'root' })
+export class MyRolesProvider extends SubjectRolesProvider implements OnDestroy {
+                                   
+    private roles: BehaviorSubject<string[]> = new BehaviorSubject(['ROLE_1', 'ROLE_2']);
+
+    roles$: Observable<string[]> = this.roles.asObservable();
+
+    constructor() {
+        super();
+    }
+   
+    ngOnDestroy(): void {
+        this.roles.complete(); 
+    }
+
+    getRoles(): string[] {
+        return this.roles.getValue();
+    }
+}
+```
+
+Import `SecurityRolesModule` in app module and set your custom `SubjectRolesProvider`.
+
+````typescript
+@NgModule({
+  imports: [
+    BrowserModule,
+    SecurityCoreModule.forRoot(),
+    SecurityRolesModule.forRoot({
+        subjectRoles: { provide: SubjectRolesProvider, useClass: MyRolesProvider }
+    })
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+````

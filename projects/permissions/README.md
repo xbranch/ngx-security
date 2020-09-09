@@ -8,24 +8,67 @@ npm install --save @ngx-security/core @ngx-security/permissions
 
 ## Setup
 
-Implement custom UserPermissionsService which extends lib's `SubjectPermissionsProvider` class
+Import `SecurityCoreModule` and `SecurityPermissionsModule` in app module.
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { Observable , of as observableOf } from 'rxjs';
+@NgModule({
+  imports: [
+    BrowserModule,
+    SecurityCoreModule.forRoot(),
+    SecurityPermissionsModule.forRoot()
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+```
+
+Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch/ngx-security/tree/develop/projects/core) for `SubjectService` implementation which provide authorities as permissions.
+
+## Usage
+
+### Structural directives
+```html
+<p *isPermitted="'printer:xpc4000:*'">This should see users with printer:xpc4000:*</p>
+```
+
+### Pipes
+```html
+<p *ngIf="'printer:xpc4000:*' | isPermitted">This should see users with printer:xpc4000:*</p>
+```
+
+### Pipes with poetry
+```html
+<p *ngIf="'user' | isPermitted:'printer:xpc4000:*'">This should see users with printer:xpc4000:*</p>`
+```
+
+
+## Advance setup
+
+Implement custom `SubjectPermissionsProvider` class
+
+```typescript
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SubjectPermissionsProvider } from '@ngx-security/permissions';
 
 @Injectable({ providedIn: 'root' })
-export class UserPermissionsService extends SubjectPermissionsProvider {
+export class MyPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
 
-    permissions$: Observable<string[]> = this.user.authorities$;
+    private permissions: BehaviorSubject<string[]> = new BehaviorSubject(['printer:xpc5000:print', 'printer:xpc4000:*', 'nas:timeCapsule,fritzbox:read']);
 
-    constructor(private user: UserService) {
+    permissions$: Observable<string[]> = this.permissions.asObservable();
+
+    constructor() {
         super();
+    }
+    
+    ngOnDestroy(): void {
+        this.permissions.complete(); 
     }
 
     getPermissions(): string[] {
-        return this.user.getAuthorities();
+        return this.permissions.getValue();
     }
 }
 ```
@@ -36,31 +79,13 @@ Import `SecurityPermissionsModule` in app module and set your custom `SubjectPer
 @NgModule({
   imports: [
     BrowserModule,
+    SecurityCoreModule.forRoot(),
     SecurityPermissionsModule.forRoot({
-        subjectPermissions: { provide: SubjectPermissionsProvider, useClass: UserPermissionsService }
+        subjectPermissions: { provide: SubjectPermissionsProvider, useClass: MyPermissionsProvider }
     })
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
-```
-
-Now you are ready to use it.
-
-## Usage
-
-### Structural directives
-```html
-<p *isPermitted="'PERMISSION_1'">This should see users with PERMISSION_1</p>
-```
-
-### Pipes
-```html
-<p *ngIf="'PERMISSION_1' | isPermitted">This should see users with PERMISSION_1</p>
-```
-
-### Pipes with poetry
-```html
-<p *ngIf="'user' | isPermitted:'PERMISSION_1'">This should see users with PERMISSION_1</p>`
 ```

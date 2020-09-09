@@ -17,6 +17,7 @@ Include `SecurityAuthModule` into `AppModule` and provide configuration for pass
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
             passwordFlow: {
                 tokenUrl: 'tokenUrl',
@@ -74,6 +76,7 @@ Include `SecurityAuthModule` into `AppModule` and provide configuration for impl
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -81,6 +84,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
              implicitFlow: {
                  loginUrl: 'loginUrl',
@@ -134,6 +138,7 @@ Include `SecurityAuthModule` into `AppModule` and provide configuration for auth
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -141,6 +146,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
             authorizationCodeFlow: {
                 loginUrl: 'loginUrl',
@@ -197,6 +203,7 @@ Include `SecurityAuthModule` into `AppModule` and provide configuration for clie
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -204,6 +211,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
             clientCredentialsFlow: {
                 tokenUrl: 'tokenUrl',
@@ -258,6 +266,7 @@ Add tokens configuration at `SecurityAuthModule` import.
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule, AuthTokens } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -265,6 +274,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
             tokens:{
                 mapper: (tokens: any): AuthTokens => {
@@ -291,6 +301,7 @@ Add subject configuration at `SecurityAuthModule` import.
 ```typescript
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SecurityCoreModule } from '@ngx-security/core';
 import { SecurityAuthModule, AuthSubject } from '@ngx-security/auth';
 
 import { AppComponent } from './app.component';
@@ -298,6 +309,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         HttpClientModule,
+        SecurityCoreModule.forRoot(),
         SecurityAuthModule.forRoot({
             subject: {
                 mapper: (jwt: any): AuthSubject<any> => {
@@ -339,6 +351,7 @@ npm install --save @ngx-security/permissions
 @NgModule({
   imports: [
     BrowserModule,
+    SecurityCoreModule.forRoot(),
     SecurityRolesModule.forRoot()
   ],
   bootstrap: [AppComponent]

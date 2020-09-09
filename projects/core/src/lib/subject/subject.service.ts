@@ -8,7 +8,7 @@ export abstract class SubjectDetails {
 
 export abstract class Subject<D extends SubjectDetails> {
   principal: string;
-  credentials: string;
+  credentials?: string;
   authorities: string[];
   details: D;
 }

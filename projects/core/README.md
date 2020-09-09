@@ -24,19 +24,36 @@ export class AppModule {
 
 ## Usage
 
-### SubjectService
 ```typescript
-import { Component } from '@angular/core';
-import { SubjectService } from '@ngx-security/core';
+import { Component, OnInit } from '@angular/core';
+import { Subject, SubjectDetails, SubjectService } from '@ngx-security/core';
+
+class UserDetails extends SubjectDetails {
+}
+
+class User extends Subject<UserDetails> {
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-    constructor(public user: SubjectService) {
+    constructor(public user: SubjectService<UserDetails, User>) {
+    }
+
+    ngOnInit(): void {
+        setTimeout(() => {
+            this.user.update({
+                principal: 'jsnow',
+                authorities: ['ROLE_1', 'ROLE_2', 'ROLE_3'],
+                details: {
+                    displayName: 'Jon Snow'
+                }
+            });
+        });
     }
 }
 ```

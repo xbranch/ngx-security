@@ -24,7 +24,6 @@ export class AppModule {
 
 ## Usage
 
-### SubjectService
 ```typescript
 import { Component } from '@angular/core';
 import { SubjectService } from '@ngx-security/core';

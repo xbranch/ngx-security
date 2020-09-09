@@ -45,14 +45,14 @@ Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch
 
 ## Advance setup
 
-Implement custom `SubjectPermissionsProvider` class
+Implement custom `SubjectPermissionsProvider` class:
 
 ```typescript
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SubjectPermissionsProvider } from '@ngx-security/permissions';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class MyPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
 
     private permissions: BehaviorSubject<string[]> = new BehaviorSubject(['printer:xpc5000:print', 'printer:xpc4000:*', 'nas:timeCapsule,fritzbox:read']);

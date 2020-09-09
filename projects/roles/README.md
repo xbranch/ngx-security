@@ -70,7 +70,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SubjectRolesProvider } from '@ngx-security/roles';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class MyRolesProvider extends SubjectRolesProvider implements OnDestroy {
                                    
     private roles: BehaviorSubject<string[]> = new BehaviorSubject(['ROLE_1', 'ROLE_2']);

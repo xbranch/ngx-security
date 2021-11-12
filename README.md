@@ -9,7 +9,6 @@ Angular security modules
 - [@ngx-security/permissions](projects/permissions)
 - [@ngx-security/auth](projects/auth)
 
-
 ## Development
 
 ### Docs preview
@@ -27,11 +26,13 @@ npm run build:lib
 ### Release new version
 
 Release new patch version
+
 ```shell script
 npm run release
 ```
 
 Release new major version
+
 ```shell script
 npm run release:major
 ```
@@ -41,10 +42,10 @@ npm run release:major
 1. checkout tag or master
 2. build library `npm run build:lib`
 3. publish each module
-    1. `npm run publish:core`
-    2. `npm run publish:roles`
-    3. `npm run publish:permissions`
-    4. `npm run publish:auth`
+  1. `npm run publish:core`
+  2. `npm run publish:roles`
+  3. `npm run publish:permissions`
+  4. `npm run publish:auth`
 
 ## License
 

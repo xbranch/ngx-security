@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/auth",
-  "version": "12.0.1",
+  "version": "13.0.0",
   "license": "MIT",
   "author": "developer@xbranch.io",
   "description": "Angular Security Auth Module",
@@ -22,8 +22,8 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^12.0.0-rc.0 || ^12.0.0",
-    "@angular/core": "^12.0.0-rc.0 || ^12.0.0",
-    "@ngx-security/core": "^12.0.0-snapshot.0 || ^12.0.0"
+    "@angular/common": "^13.0.0-rc.0 || ^13.0.0",
+    "@angular/core": "^13.0.0-rc.0 || ^13.0.0",
+    "@ngx-security/core": "^13.0.0-snapshot.0 || ^13.0.0"
   }
 }

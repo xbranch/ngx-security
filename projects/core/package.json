@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/core",
-  "version": "12.0.2-snapshot.0",
+  "version": "13.0.0",
   "license": "MIT",
   "author": "User <developer@xbranch.io>",
   "description": "Angular Core Roles Module",

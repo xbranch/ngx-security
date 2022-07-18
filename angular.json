@@ -35,7 +35,10 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "shiro-trie"
+            ]
           },
           "configurations": {
             "production": {
@@ -232,6 +235,5 @@
         }
       }
     }
-  },
-  "defaultProject": "ngx-security"
+  }
 }

@@ -5,12 +5,12 @@
     <br/>
 
     <h2>Installation</h2>
-    <pre><code [highlight]="'npm install --save @ngx-security/core'"></code></pre>
+    <pre><code [highlight]="'npm install --save @ngx-security/core'" [language]="'bash'"></code></pre>
     <br/>
 
     <h2>Usage</h2>
-    <pre><code [highlight]="usageComponentController"></code></pre>
-    <pre><code [highlight]="usageComponentView"></code></pre>
+    <pre><code [highlight]="usageComponentController" [language]="'typescript'"></code></pre>
+    <pre><code [highlight]="usageComponentView" [language]="'html'"></code></pre>
 
   </mat-tab>
   <mat-tab label="Demo">
@@ -22,10 +22,10 @@
       <mat-card>
         <mat-card-title>
           <span *ngIf="!(user.isAuthorized$ | async)">Please login to continue</span>
-          <span *ngIf="user.isAuthorized$ | async">Welcome, {{user.displayName$ | async}}</span>
+          <span *ngIf="user.isAuthorized$ | async">Welcome, {{ user.displayName$ | async }}</span>
         </mat-card-title>
         <mat-card-content>
-          <h3 *ngIf="user.isAuthorized$ | async">authorities: {{user.authorities$ | async | json}}</h3>
+          <h3 *ngIf="user.isAuthorized$ | async">authorities: {{ user.authorities$ | async | json }}</h3>
         </mat-card-content>
         <mat-card-actions *ngIf="!(user.isAuthorized$ | async)" align="center">
           <button mat-raised-button color="primary" (click)="login()">LOGIN</button>

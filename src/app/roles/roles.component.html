@@ -5,27 +5,28 @@
     <br/>
 
     <h2>Installation</h2>
-    <pre><code [highlight]="'npm install --save @ngx-security/core @ngx-security/roles'"></code></pre>
+    <pre><code [highlight]="'npm install --save @ngx-security/core @ngx-security/roles'"
+               [language]="'bash'"></code></pre>
     <br/>
 
     <h2>Usage</h2>
 
     <h4>Structural directives</h4>
-    <pre><code [highlight]="hasRoleStructuralDirective"></code></pre>
-    <pre><code [highlight]="hasAnyRoleStructuralDirective"></code></pre>
-    <pre><code [highlight]="hasRolesStructuralDirective"></code></pre>
+    <pre><code [highlight]="hasRoleStructuralDirective" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasAnyRoleStructuralDirective" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasRolesStructuralDirective" [language]="'html'"></code></pre>
     <br/>
 
     <h4>Pipes</h4>
-    <pre><code [highlight]="hasRolePipe"></code></pre>
-    <pre><code [highlight]="hasAnyRolePipe"></code></pre>
-    <pre><code [highlight]="hasRolesPipe"></code></pre>
+    <pre><code [highlight]="hasRolePipe" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasAnyRolePipe" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasRolesPipe" [language]="'html'"></code></pre>
     <br/>
 
     <h4>Pipes with poetry</h4>
-    <pre><code [highlight]="hasRolePipePoetry"></code></pre>
-    <pre><code [highlight]="hasAnyRolePipePoetry"></code></pre>
-    <pre><code [highlight]="hasRolesPipePoetry"></code></pre>
+    <pre><code [highlight]="hasRolePipePoetry" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasAnyRolePipePoetry" [language]="'html'"></code></pre>
+    <pre><code [highlight]="hasRolesPipePoetry" [language]="'html'"></code></pre>
 
   </mat-tab>
   <mat-tab label="Demo">
@@ -37,7 +38,7 @@
       <mat-form-field style="width:100%;">
         <mat-chip-grid #chipList>
           <mat-chip *ngFor="let role of roles" (removed)="remove(role)">
-            {{role}}
+            {{ role }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input #rolesInput
@@ -48,7 +49,7 @@
                  (matChipInputTokenEnd)="add($event)">
         </mat-chip-grid>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-          <mat-option *ngFor="let role of filteredRoles | async" [value]="role">{{role}}</mat-option>
+          <mat-option *ngFor="let role of filteredRoles | async" [value]="role">{{ role }}</mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>

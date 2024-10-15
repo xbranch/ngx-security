@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 
 import { SecurityCoreModule } from '../../projects/core/src/lib/core.module';
@@ -28,7 +28,6 @@ import { Subject } from '../../projects/core/src/lib/subject/subject.service';
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
 
     MatToolbarModule,
     MatSidenavModule,
@@ -96,6 +95,7 @@ import { Subject } from '../../projects/core/src/lib/subject/subject.service';
     AppComponent
   ],
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {
       provide: HIGHLIGHT_OPTIONS,
@@ -104,7 +104,8 @@ import { Subject } from '../../projects/core/src/lib/subject/subject.service';
         languages: {
           typescript: () => import('highlight.js/lib/languages/typescript'),
           scss: () => import('highlight.js/lib/languages/scss'),
-          xml: () => import('highlight.js/lib/languages/xml')
+          xml: () => import('highlight.js/lib/languages/xml'),
+          bash: () => import('highlight.js/lib/languages/bash.js')
         }
       }
     }

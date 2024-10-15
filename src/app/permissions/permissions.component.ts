@@ -30,13 +30,13 @@ export class PermissionsComponent implements OnInit {
 
   firstCard = `
 <mat-card *isPermitted="'printer:xpc4000:configure'">
-<span>Permission is 'printer:xpc4000:configure'</span>
+  <span>Permission is 'printer:xpc4000:configure'</span>
 </mat-card>
 `;
 
   secondCard = `
 <mat-card *ngIf="'user' | isPermitted:'nas:timeCapsule:write'">
-<span>Permission is 'nas:timeCapsule:write'</span>
+  <span>Permission is 'nas:timeCapsule:write'</span>
 </mat-card>
 `;
 

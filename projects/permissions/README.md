@@ -1,5 +1,7 @@
 # ngx-security/permissions
 
+This module provides a way to manage permissions in your Angular application using structural directives and pipes. Default permissions are provided by the `SubjectService` from `@ngx-security/core`, which is used to manage user details and authorities.
+
 ## Installation
 
 ```shell script
@@ -8,19 +10,15 @@ npm install --save @ngx-security/core @ngx-security/permissions
 
 ## Setup
 
-Import `SecurityCoreModule` and `SecurityPermissionsModule` in app module.
+`SubjectPermissionsProvider` is provided using the `provideSecurityPermissions` helper function, which most apps include in the application `providers` in `app.config.ts`.
 
 ```typescript
-@NgModule({
-  imports: [
-    BrowserModule,
-    SecurityCoreModule.forRoot(),
-    SecurityPermissionsModule.forRoot()
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {
-}
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSecurityCore(),
+    provideSecurityPermissions()
+  ]
+};
 ```
 
 Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch/ngx-security/tree/develop/projects/core) for `SubjectService` implementation which provide authorities as permissions.
@@ -28,20 +26,22 @@ Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch
 ## Usage
 
 ### Structural directives
+
 ```html
 <p *isPermitted="'printer:xpc4000:*'">This should see users with printer:xpc4000:*</p>
 ```
 
 ### Pipes
+
 ```html
 <p *ngIf="'printer:xpc4000:*' | isPermitted">This should see users with printer:xpc4000:*</p>
 ```
 
 ### Pipes with poetry
+
 ```html
 <p *ngIf="'user' | isPermitted:'printer:xpc4000:*'">This should see users with printer:xpc4000:*</p>`
 ```
-
 
 ## Advance setup
 
@@ -55,37 +55,33 @@ import { SubjectPermissionsProvider } from '@ngx-security/permissions';
 @Injectable()
 export class MyPermissionsProvider extends SubjectPermissionsProvider implements OnDestroy {
 
-    private permissions: BehaviorSubject<string[]> = new BehaviorSubject(['printer:xpc5000:print', 'printer:xpc4000:*', 'nas:timeCapsule,fritzbox:read']);
+  private permissions: BehaviorSubject<string[]> = new BehaviorSubject(['printer:xpc5000:print', 'printer:xpc4000:*', 'nas:timeCapsule,fritzbox:read']);
 
-    permissions$: Observable<string[]> = this.permissions.asObservable();
+  permissions$: Observable<string[]> = this.permissions.asObservable();
 
-    constructor() {
-        super();
-    }
-    
-    ngOnDestroy(): void {
-        this.permissions.complete(); 
-    }
+  constructor() {
+    super();
+  }
 
-    getPermissions(): string[] {
-        return this.permissions.getValue();
-    }
+  ngOnDestroy(): void {
+    this.permissions.complete();
+  }
+
+  getPermissions(): string[] {
+    return this.permissions.getValue();
+  }
 }
 ```
 
-Import `SecurityPermissionsModule` in app module and set your custom `SubjectPermissionsProvider`.
+Add provider for core and permissions module in your `app.config.ts` and set your custom provider:
 
 ```typescript
-@NgModule({
-  imports: [
-    BrowserModule,
-    SecurityCoreModule.forRoot(),
-    SecurityPermissionsModule.forRoot({
-        subjectPermissions: { provide: SubjectPermissionsProvider, useClass: MyPermissionsProvider }
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSecurityCore(),
+    provideSecurityPermissions({
+      subjectPermissions: {provide: SubjectPermissionsProvider, useClass: MyPermissionsProvider}
     })
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {
-}
+  ]
+};
 ```

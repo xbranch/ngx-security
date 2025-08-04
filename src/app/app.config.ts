@@ -1,5 +1,5 @@
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withHashLocation } from '@angular/router';
 import { provideHighlightOptions } from 'ngx-highlightjs';
@@ -22,18 +22,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     provideRouter(routes, withHashLocation()),
-    provideHttpClient(),
-
-    provideHighlightOptions({
-      coreLibraryLoader: () => import('highlight.js/lib/core'),
-      languages: {
-        typescript: () => import('highlight.js/lib/languages/typescript'),
-        scss: () => import('highlight.js/lib/languages/scss'),
-        xml: () => import('highlight.js/lib/languages/xml'),
-        bash: () => import('highlight.js/lib/languages/bash.js')
-      }
-    }),
-
+    provideHttpClient(withInterceptorsFromDi()),
     provideSecurityCore(),
     provideSecurityRoles({
       subjectRoles: {provide: SubjectRolesProvider, useClass: UpdatableSubjectRolesProvider}
@@ -85,6 +74,15 @@ export const appConfig: ApplicationConfig = {
       } as any,
       interceptor: {
         whitelistedUrls: [new RegExp('.*/my-api.*')]
+      }
+    }),
+    provideHighlightOptions({
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      languages: {
+        typescript: () => import('highlight.js/lib/languages/typescript'),
+        scss: () => import('highlight.js/lib/languages/scss'),
+        xml: () => import('highlight.js/lib/languages/xml'),
+        bash: () => import('highlight.js/lib/languages/bash.js')
       }
     })
   ]

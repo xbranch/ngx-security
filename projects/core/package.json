@@ -1,6 +1,6 @@
 {
   "name": "@ngx-security/core",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "license": "MIT",
   "author": "User <developer@xbranch.io>",
   "description": "Angular Core Roles Module",
@@ -17,7 +17,7 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^18.0.0-rc.0 || ^18.0.0",
-    "@angular/core": "^18.0.0-rc.0 || ^18.0.0"
+    "@angular/common": "^19.0.0-rc.0 || ^19.0.0",
+    "@angular/core": "^19.0.0-rc.0 || ^19.0.0"
   }
 }

@@ -5,6 +5,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { SharedModule } from '../shared/shared.module';
+import { SecurityRolesModule } from '../../../projects/roles/src/lib/roles.module';
 import { SubjectRolesProvider, UpdatableSubjectRolesProvider } from '../../../projects/roles/src/lib/subject-roles.provider';
 
 const hasRoleStructuralDirective = `<p *hasRole="'ROLE_1'">This should see users with ROLE_1</p>`;
@@ -23,6 +25,7 @@ const hasRolesPipePoetry = `<p *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">Thi
   selector: 'app-roles',
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss'],
+  imports: [SharedModule, SecurityRolesModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RolesComponent {

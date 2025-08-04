@@ -15,12 +15,15 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ngx-security",
+            "outputPath": {
+              "base": "dist/ngx-security"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -30,18 +33,21 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
             "allowedCommonJsDependencies": [
               "shiro-trie"
-            ]
+            ],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
+              "outputPath": {
+                "base": "docs",
+                "browser": ""
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -58,9 +64,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": ""
@@ -88,7 +92,7 @@
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "arma.conf.js",
+            "karmaConfig": "karma.conf.js",
             "styles": [
               "src/styles.scss"
             ],

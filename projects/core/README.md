@@ -1,5 +1,7 @@
 # ngx-security/core
 
+This package provides the core functionality for managing subjects in the `@ngx-security` ecosystem. It includes the `SubjectService`, which is used to manage user details, authorities, and other subject-related information.
+
 ## Installation
 
 ```shell script
@@ -8,18 +10,14 @@ npm install --save @ngx-security/core
 
 ## Setup
 
-Import `SecurityCoreModule` in app module.
+`SubjectService` is provided using the `provideSecurityCore` helper function, which most apps include in the application `providers` in `app.config.ts`.
 
 ```typescript
-@NgModule({
-  imports: [
-    BrowserModule,
-    SecurityCoreModule.forRoot()
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {
-}
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSecurityCore()
+  ]
+};
 ```
 
 ## Usage
@@ -41,20 +39,20 @@ class User extends Subject<UserDetails> {
 })
 export class AppComponent implements OnInit {
 
-    constructor(public user: SubjectService<UserDetails, User>) {
-    }
+  constructor(public user: SubjectService<UserDetails, User>) {
+  }
 
-    ngOnInit(): void {
-        setTimeout(() => {
-            this.user.update({
-                principal: 'jsnow',
-                authorities: ['ROLE_1', 'ROLE_2', 'ROLE_3'],
-                details: {
-                    displayName: 'Jon Snow'
-                }
-            });
-        });
-    }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.user.update({
+        principal: 'jsnow',
+        authorities: ['ROLE_1', 'ROLE_2', 'ROLE_3'],
+        details: {
+          displayName: 'Jon Snow'
+        }
+      });
+    });
+  }
 }
 ```
 

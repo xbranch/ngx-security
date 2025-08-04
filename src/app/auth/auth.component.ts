@@ -2,12 +2,16 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { PasswordFlowService } from '../../../projects/auth/src/lib/service/password-flow/password-flow.service';
 import { ImplicitFlowService } from '../../../projects/auth/src/lib/service/implicit-flow/implicit-flow.service';
-import { AuthorizationCodeFlowService } from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow.service';
+import {
+  AuthorizationCodeFlowService
+} from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
+  imports: [SharedModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { Subject, SubjectDetails, SubjectService } from '@ngx-security/core';
 
@@ -30,91 +30,75 @@ export interface SecurityAuthModuleConfig<D extends SubjectDetails, S extends Su
 export function tokensFactory(options: TokensServiceOptions, passwordFlowOptions: PasswordFlowOptions,
                               authorizationCodeFlowOptions: AuthorizationCodeFlowOptions,
                               clientCredentialsFlowOptions: ClientCredentialsFlowOptions): (http: HttpClient) => TokensService {
-  const factory = (http: HttpClient) =>
+  return (http: HttpClient) =>
     new TokensService(http, new TokensServiceOptions(options), new PasswordFlowOptions(passwordFlowOptions),
       new AuthorizationCodeFlowOptions(authorizationCodeFlowOptions), new ClientCredentialsFlowOptions(clientCredentialsFlowOptions));
-  return factory;
 }
 
 export function passwordFlowFactory(): (tokens: TokensService) => PasswordFlowService {
-  const factory = (tokens: TokensService) => new PasswordFlowService(tokens);
-  return factory;
+  return (tokens: TokensService) => new PasswordFlowService(tokens);
 }
 
 export function implicitFlowFactory(options: ImplicitFlowOptions): (tokens: TokensService) => ImplicitFlowService {
-  const factory = (tokens: TokensService) => new ImplicitFlowService(tokens, new ImplicitFlowOptions(options));
-  return factory;
+  return (tokens: TokensService) => new ImplicitFlowService(tokens, new ImplicitFlowOptions(options));
 }
 
 export function authorizationCodeFlowFactory(options: AuthorizationCodeFlowOptions): (tokens: TokensService) =>
   AuthorizationCodeFlowService {
-  const factory = (tokens: TokensService) =>
+  return (tokens: TokensService) =>
     new AuthorizationCodeFlowService(tokens, new AuthorizationCodeFlowOptions(options));
-  return factory;
 }
 
 export function clientCredentialsFlowFactory(): (tokens: TokensService) => ClientCredentialsFlowService {
-  const factory = (tokens: TokensService) => new ClientCredentialsFlowService(tokens);
-  return factory;
+  return (tokens: TokensService) => new ClientCredentialsFlowService(tokens);
 }
 
 export function authSubjectFactory<D extends SubjectDetails, S extends Subject<D>>(options: AuthSubjectServiceOptions<D, S>)
   : (tokens: TokensService) => AuthSubjectService<D, S> {
-  const factory = (tokens: TokensService) => new AuthSubjectService(tokens, new AuthSubjectServiceOptions(options));
-  return factory;
+  return (tokens: TokensService) => new AuthSubjectService(tokens, new AuthSubjectServiceOptions(options));
 }
 
 export function interceptorFactory(options: AuthHttpInterceptorOptions): (tokens: TokensService) => AuthHttpInterceptor {
-  const factory = (tokens: TokensService) => new AuthHttpInterceptor(tokens, new AuthHttpInterceptorOptions(options));
-  return factory;
+  return (tokens: TokensService) => new AuthHttpInterceptor(tokens, new AuthHttpInterceptorOptions(options));
 }
 
-
-@NgModule()
-export class SecurityAuthModule {
-
-  static forRoot<D extends SubjectDetails, S extends Subject<D>>(config: SecurityAuthModuleConfig<D, S> = {})
-    : ModuleWithProviders<SecurityAuthModule> {
-    return {
-      ngModule: SecurityAuthModule,
-      providers: [
-        {
-          provide: TokensService,
-          useFactory: tokensFactory(config.tokens, config.passwordFlow, config.authorizationCodeFlow, config.clientCredentialsFlow),
-          deps: [HttpClient]
-        },
-        {
-          provide: PasswordFlowService,
-          useFactory: passwordFlowFactory(),
-          deps: [TokensService]
-        },
-        {
-          provide: ImplicitFlowService,
-          useFactory: implicitFlowFactory(config.implicitFlow),
-          deps: [TokensService]
-        },
-        {
-          provide: AuthorizationCodeFlowService,
-          useFactory: authorizationCodeFlowFactory(config.authorizationCodeFlow),
-          deps: [TokensService]
-        },
-        {
-          provide: ClientCredentialsFlowService,
-          useFactory: clientCredentialsFlowFactory(),
-          deps: [TokensService]
-        },
-        {
-          provide: SubjectService,
-          useFactory: authSubjectFactory(config.subject),
-          deps: [TokensService]
-        },
-        {
-          provide: HTTP_INTERCEPTORS,
-          useFactory: interceptorFactory(config.interceptor),
-          deps: [TokensService],
-          multi: true
-        }
-      ]
-    };
-  }
+export function provideSecurityAuth<D extends SubjectDetails, S extends Subject<D>>(config: SecurityAuthModuleConfig<D, S> = {}): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    {
+      provide: TokensService,
+      useFactory: tokensFactory(config.tokens, config.passwordFlow, config.authorizationCodeFlow, config.clientCredentialsFlow),
+      deps: [HttpClient]
+    },
+    {
+      provide: PasswordFlowService,
+      useFactory: passwordFlowFactory(),
+      deps: [TokensService]
+    },
+    {
+      provide: ImplicitFlowService,
+      useFactory: implicitFlowFactory(config.implicitFlow),
+      deps: [TokensService]
+    },
+    {
+      provide: AuthorizationCodeFlowService,
+      useFactory: authorizationCodeFlowFactory(config.authorizationCodeFlow),
+      deps: [TokensService]
+    },
+    {
+      provide: ClientCredentialsFlowService,
+      useFactory: clientCredentialsFlowFactory(),
+      deps: [TokensService]
+    },
+    {
+      provide: SubjectService,
+      useFactory: authSubjectFactory(config.subject),
+      deps: [TokensService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: interceptorFactory(config.interceptor),
+      deps: [TokensService],
+      multi: true
+    }
+  ]);
 }

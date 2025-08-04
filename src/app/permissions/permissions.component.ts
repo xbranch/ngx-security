@@ -3,6 +3,8 @@ import {
   SubjectPermissionsProvider,
   UpdatableSubjectPermissionsProvider
 } from '../../../projects/permissions/src/lib/subject-permissions.provider';
+import { SharedModule } from '../shared/shared.module';
+import { SecurityPermissionsModule } from '../../../projects/permissions/src/lib/permissions.module';
 
 const isPermittedDirective = `<p *isPermitted="'printer:xpc4000:configure'"></p>`;
 const isPermittedPipe = `<p *ngIf="'nas:timeCapsule:write' | isPermitted"></p>`;
@@ -12,6 +14,7 @@ const isPermittedPipePoetry = `<p *ngIf="'user' | isPermitted:'nas:timeCapsule:w
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
+  imports: [SharedModule,SecurityPermissionsModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PermissionsComponent implements OnInit {

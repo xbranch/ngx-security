@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Subject, SubjectDetails, SubjectService } from '../../../projects/core/src/lib/subject/subject.service';
-
+import { SharedModule } from '../shared/shared.module';
 
 const usageComponentController = `
 import { Component } from '@angular/core';
@@ -40,6 +40,7 @@ class User extends Subject<UserDetails> {
   selector: 'app-core',
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.scss'],
+  imports: [SharedModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoreComponent {

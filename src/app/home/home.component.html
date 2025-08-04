@@ -1,16 +1,18 @@
-<mat-card *ngFor="let module of modules">
-  <mat-card-header>
-    <mat-card-title>{{module.title}}</mat-card-title>
-    <mat-card-subtitle>{{module.subTitle}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="{{module.image}}" alt="{{module.subTitle}}">
-  <mat-card-content>
-    <p>{{module.description}}</p>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-button [routerLink]="module.link">
-      <span>MORE</span> &nbsp;
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
-  </mat-card-actions>
-</mat-card>
+@for (module of modules; track module.link) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ module.title }}</mat-card-title>
+      <mat-card-subtitle>{{ module.subTitle }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{module.image}}" alt="{{module.subTitle}}">
+    <mat-card-content>
+      <p>{{ module.description }}</p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button [routerLink]="module.link">
+        <span>MORE</span> &nbsp;
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+}

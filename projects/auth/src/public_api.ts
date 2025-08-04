@@ -1,7 +1,3 @@
-/*
- * Public API Surface of auth
- */
-
 export * from './lib/util/base64.util';
 export * from './lib/util/jwt.util';
 export * from './lib/util/locale-storage.util';
@@ -23,4 +19,4 @@ export * from './lib/service/client-credentials-flow/client-credentials-flow.ser
 export * from './lib/service/subject/auth-subject.service';
 export * from './lib/interceptor/auth-http-interceptor-options';
 export * from './lib/interceptor/auth-http.interceptor';
-export * from './lib/auth.module';
+export * from './lib/auth.provider';

@@ -6,3 +6,4 @@ export * from './lib/has-roles/has-roles.directive';
 export * from './lib/has-roles/has-roles.pipe';
 export * from './lib/subject-roles.provider';
 export * from './lib/roles.module';
+export * from './lib/roles.provider';

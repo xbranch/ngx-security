@@ -3,8 +3,8 @@
     <button mat-icon-button (click)="nav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="app-name">{{(pageInfo$ | async)?.title}}</h1>
-    <span>{{version}}</span>
+    <h1 class="app-name">{{ (pageInfo$ | async)?.title }}</h1>
+    <span>{{ version }}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -37,8 +37,8 @@
   <mat-sidenav-content>
     <mat-toolbar>
       <mat-toolbar-row>
-        <mat-icon>{{(pageInfo$ | async)?.pageIcon}}</mat-icon>
-        <h1 style="margin-left:8px;margin-bottom:0;">{{(pageInfo$ | async)?.pageTitle}}</h1>
+        <mat-icon>{{ (pageInfo$ | async)?.pageIcon }}</mat-icon>
+        <h1 style="margin-left:8px;margin-bottom:0;">{{ (pageInfo$ | async)?.pageTitle }}</h1>
       </mat-toolbar-row>
     </mat-toolbar>
 

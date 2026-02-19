@@ -22,8 +22,8 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^20.0.0-rc.0 || ^20.0.0",
-    "@angular/core": "^20.0.0-rc.0 || ^20.0.0",
-    "@ngx-security/core": "^20.0.0-snapshot.0 || ^20.0.0"
+    "@angular/common": "^21.0.0-rc.0 || ^21.0.0",
+    "@angular/core": "^21.0.0-rc.0 || ^21.0.0",
+    "@ngx-security/core": "^21.0.0-snapshot.0 || ^21.0.0"
   }
 }

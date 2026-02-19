@@ -22,19 +22,29 @@
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            <span *ngIf="!(user.isAuthorized$ | async)">Please login to continue</span>
-            <span *ngIf="user.isAuthorized$ | async">Welcome, {{ user.displayName$ | async }}</span>
+            @if (!(user.isAuthorized$ | async)) {
+              <span>Please login to continue</span>
+            }
+            @if (user.isAuthorized$ | async) {
+              <span>Welcome, {{ user.displayName$ | async }}</span>
+            }
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <h3 *ngIf="user.isAuthorized$ | async">authorities: {{ user.authorities$ | async | json }}</h3>
+          @if (user.isAuthorized$ | async) {
+            <h3>authorities: {{ user.authorities$ | async | json }}</h3>
+          }
         </mat-card-content>
-        <mat-card-actions *ngIf="!(user.isAuthorized$ | async)" align="end">
-          <button mat-raised-button color="primary" (click)="login()">LOGIN</button>
-        </mat-card-actions>
-        <mat-card-actions *ngIf="user.isAuthorized$ | async" align="end">
-          <button mat-button color="primary" (click)="logout()">LOGOUT</button>
-        </mat-card-actions>
+        @if (!(user.isAuthorized$ | async)) {
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="login()">LOGIN</button>
+          </mat-card-actions>
+        }
+        @if (user.isAuthorized$ | async) {
+          <mat-card-actions align="end">
+            <button mat-button color="primary" (click)="logout()">LOGOUT</button>
+          </mat-card-actions>
+        }
       </mat-card>
     </div>
 

@@ -33,14 +33,18 @@ Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch
 
 ### Pipes
 
-```html
-<p *ngIf="'printer:xpc4000:*' | isPermitted">This should see users with printer:xpc4000:*</p>
+```angular20html
+@if ('printer:xpc4000:*' | isPermitted) {
+    <p>This should see users with printer:xpc4000:*</p>
+}
 ```
 
 ### Pipes with poetry
 
-```html
-<p *ngIf="'user' | isPermitted:'printer:xpc4000:*'">This should see users with printer:xpc4000:*</p>`
+```angular20html
+@if ('user' | isPermitted:'printer:xpc4000:*') {
+    <p>This should see users with printer:xpc4000:*</p>`
+}
 ```
 
 ## Advance setup

@@ -37,10 +37,12 @@
     <form>
       <mat-form-field style="width:100%;">
         <mat-chip-grid #chipList>
-          <mat-chip *ngFor="let role of roles" (removed)="remove(role)">
-            {{ role }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
+          @for (role of roles; track role) {
+            <mat-chip (removed)="remove(role)">
+              {{ role }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          }
           <input #rolesInput
                  placeholder="User roles"
                  [formControl]="rolesCtrl"
@@ -49,7 +51,9 @@
                  (matChipInputTokenEnd)="add($event)">
         </mat-chip-grid>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-          <mat-option *ngFor="let role of filteredRoles | async" [value]="role">{{ role }}</mat-option>
+          @for (role of filteredRoles | async; track role) {
+            <mat-option [value]="role">{{ role }}</mat-option>
+          }
         </mat-autocomplete>
       </mat-form-field>
     </form>
@@ -60,15 +64,21 @@
     <mat-card>
       <span>This is card is always visible to all users. Add some role to see more cards</span>
     </mat-card>
-    <mat-card *ngIf="'user' | hasRole:'ROLE_1'">
-      <span>This is visible because user has ROLE_1</span>
-    </mat-card>
-    <mat-card *ngIf="'user' | hasAnyRole:['ROLE_1','ROLE_2']">
-      <span>This is visible because user has ROLE_1 or ROLE_2</span>
-    </mat-card>
-    <mat-card *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">
-      <span>This is visible because user has ROLE_1 and ROLE_2</span>
-    </mat-card>
+    @if ('user' | hasRole:'ROLE_1') {
+      <mat-card>
+        <span>This is visible because user has ROLE_1</span>
+      </mat-card>
+    }
+    @if ('user' | hasAnyRole:['ROLE_1', 'ROLE_2']) {
+      <mat-card>
+        <span>This is visible because user has ROLE_1 or ROLE_2</span>
+      </mat-card>
+    }
+    @if ('user' | hasRoles:['ROLE_1', 'ROLE_2']) {
+      <mat-card>
+        <span>This is visible because user has ROLE_1 and ROLE_2</span>
+      </mat-card>
+    }
 
     <mat-card *hasRole="'ROLE_1'">
       <span>This is visible because user has ROLE_1</span>

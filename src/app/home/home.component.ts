@@ -1,14 +1,35 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardImage,
+  MatCardSubtitle,
+  MatCardTitle
+} from '@angular/material/card';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [SharedModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatCardImage,
+    MatCardActions,
+    MatButton,
+    MatIcon,
+    RouterLink
+  ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   modules = [{
     title: 'ngx-security/core',
@@ -35,10 +56,4 @@ export class HomeComponent implements OnInit {
     description: 'Authorization module ',
     image: 'assets/auth.png'
   }];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }

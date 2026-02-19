@@ -13,7 +13,7 @@ export class IsPermittedPipe implements PipeTransform, OnDestroy {
   constructor(private ref: ChangeDetectorRef, private subject: SubjectPermissionsProvider) {
   }
 
-  transform(permission: string, permissionAsArg: string): boolean {
+  transform(permission: string, permissionAsArg?: string): boolean {
     permission = permissionAsArg || permission;
     this.clear();
     this.sub = this.subject.isPermittedAsync(permission).subscribe((isPermitted) => {

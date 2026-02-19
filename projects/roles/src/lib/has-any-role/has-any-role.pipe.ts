@@ -13,7 +13,7 @@ export class HasAnyRolePipe implements PipeTransform, OnDestroy {
   constructor(private ref: ChangeDetectorRef, private subject: SubjectRolesProvider) {
   }
 
-  transform(roles: string | string[], rolesAsArg: string[]): boolean {
+  transform(roles: string | string[], rolesAsArg?: string[]): boolean {
     roles = rolesAsArg || roles as string[];
     this.clear();
     this.sub = this.subject.hasAnyRoleAsync(roles).subscribe((hasAnyRole) => {

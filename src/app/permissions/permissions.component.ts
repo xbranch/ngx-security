@@ -1,21 +1,31 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatCard } from '@angular/material/card';
+import { Highlight } from 'ngx-highlightjs';
+
 import {
   SubjectPermissionsProvider,
   UpdatableSubjectPermissionsProvider
 } from '../../../projects/permissions/src/lib/subject-permissions.provider';
-import { SharedModule } from '../shared/shared.module';
 import { SecurityPermissionsModule } from '../../../projects/permissions/src/lib/permissions.module';
 
-const isPermittedDirective = `<p *isPermitted="'printer:xpc4000:configure'"></p>`;
-const isPermittedPipe = `<p *ngIf="'nas:timeCapsule:write' | isPermitted"></p>`;
-const isPermittedPipePoetry = `<p *ngIf="'user' | isPermitted:'nas:timeCapsule:write'"></p>`;
+const isPermittedDirective = `<p *isPermitted="'printer:xpc4000:configure'">Visible to users with 'printer:xpc4000:configure' permission</p>`;
+const isPermittedPipe = `
+@if ('nas:timeCapsule:write' | isPermitted) {
+    <p>Visible to users with 'nas:timeCapsule:write' permission</p>
+}
+`;
+const isPermittedPipePoetry = `
+@if ('user' | isPermitted:'nas:timeCapsule:write') {
+    <p>Visible to users with 'nas:timeCapsule:write' permission</p>
+}
+`;
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
-  imports: [SharedModule,SecurityPermissionsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [SecurityPermissionsModule, MatTabGroup, MatTab, Highlight, MatCard]
 })
 export class PermissionsComponent implements OnInit {
 
@@ -38,9 +48,11 @@ export class PermissionsComponent implements OnInit {
 `;
 
   secondCard = `
-<mat-card *ngIf="'user' | isPermitted:'nas:timeCapsule:write'">
-  <span>Permission is 'nas:timeCapsule:write'</span>
-</mat-card>
+@if ('user' | isPermitted:'nas:timeCapsule:write') {
+    <mat-card >
+        <span>Permission is 'nas:timeCapsule:write'</span>
+    </mat-card>
+}
 `;
 
   constructor(private subjectPermissionsProvider: SubjectPermissionsProvider) {

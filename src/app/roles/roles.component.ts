@@ -1,11 +1,16 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
+import { MatChip, MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove } from '@angular/material/chips';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatFormField } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard } from '@angular/material/card';
+import { Highlight } from 'ngx-highlightjs';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { SharedModule } from '../shared/shared.module';
 import { SecurityRolesModule } from '../../../projects/roles/src/lib/roles.module';
 import { SubjectRolesProvider, UpdatableSubjectRolesProvider } from '../../../projects/roles/src/lib/subject-roles.provider';
 
@@ -13,20 +18,43 @@ const hasRoleStructuralDirective = `<p *hasRole="'ROLE_1'">This should see users
 const hasAnyRoleStructuralDirective = `<p *hasAnyRole="['ROLE_1','ROLE_2']">This should see users with ROLE_1 or ROLE_2</p>`;
 const hasRolesStructuralDirective = `<p *hasRoles="['ROLE_1','ROLE_2']">This should see users with ROLE_1 and ROLE_2</p>`;
 
-const hasRolePipe = `<p *ngIf="'ROLE_1' | hasRole">This should see users with ROLE_1</p>`;
-const hasAnyRolePipe = `<p *ngIf="['ROLE_1','ROLE_2'] | hasAnyRole">This should see users with ROLE_1 or ROLE_2</p>`;
-const hasRolesPipe = `<p *ngIf="['ROLE_1','ROLE_2'] | hasRoles">This should see users with ROLE_1 and ROLE_2</p>`;
+const hasRolePipe = `
+@if ('ROLE_1' | hasRole) {
+    <p>This should see users with ROLE_1</p>
+}
+`;
+const hasAnyRolePipe = `
+@if (['ROLE_1','ROLE_2'] | hasAnyRole) {
+    <p>This should see users with ROLE_1 or ROLE_2</p>
+}
+`;
+const hasRolesPipe = `
+@if (['ROLE_1','ROLE_2'] | hasRoles) {
+    <p>This should see users with ROLE_1 and ROLE_2</p>
+}
+`;
 
-const hasRolePipePoetry = `<p *ngIf="'user' | hasRole:'ROLE_1'">This should see users with ROLE_1</p>`;
-const hasAnyRolePipePoetry = `<p *ngIf="'user' | hasAnyRole:['ROLE_1','ROLE_2']">This should see users with ROLE_1 or ROLE_2</p>`;
-const hasRolesPipePoetry = `<p *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">This should see users with ROLE_1 and ROLE_2</p>`;
+const hasRolePipePoetry = `
+@if ('user' | hasRole:'ROLE_1') {
+    <p>This should see users with ROLE_1</p>
+}
+`;
+const hasAnyRolePipePoetry = `
+@if ('user' | hasAnyRole:['ROLE_1','ROLE_2']) {
+    <p>This should see users with ROLE_1 or ROLE_2</p>
+}
+`;
+const hasRolesPipePoetry = `
+@if ('user' | hasRoles:['ROLE_1','ROLE_2']) {
+    <p>This should see users with ROLE_1 and ROLE_2</p>
+}
+`;
 
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss'],
-  imports: [SharedModule, SecurityRolesModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [SecurityRolesModule, MatTabGroup, Highlight, MatTab, MatFormField, MatChipGrid, MatChip, MatIcon, ReactiveFormsModule, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatOption, MatCard, AsyncPipe, MatChipRemove]
 })
 export class RolesComponent {
 
@@ -57,7 +85,7 @@ export class RolesComponent {
   }
 
   add(event: MatChipInputEvent): void {
-    const input = event.input;
+    const input = event.chipInput;
     const value = event.value;
 
     if ((value || '').trim()) {
@@ -66,7 +94,7 @@ export class RolesComponent {
     }
 
     if (input) {
-      input.value = '';
+      input.clear();
     }
 
     this.rolesCtrl.setValue(null);

@@ -45,9 +45,10 @@
     <mat-card *isPermitted="'printer:xpc4000:configure'">
       <span>Permission is 'printer:xpc4000:configure'</span>
     </mat-card>
-    <mat-card *ngIf="'user' | isPermitted:'nas:timeCapsule:write'">
-      <span>Permission is 'nas:timeCapsule:write'</span>
-    </mat-card>
-
+    @if ('user' | isPermitted:'nas:timeCapsule:write') {
+      <mat-card>
+        <span>Permission is 'nas:timeCapsule:write'</span>
+      </mat-card>
+    }
   </mat-tab>
 </mat-tab-group>

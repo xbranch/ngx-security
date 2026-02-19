@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { Highlight } from 'ngx-highlightjs';
 
 import { Subject, SubjectDetails, SubjectService } from '../../../projects/core/src/lib/subject/subject.service';
-import { SharedModule } from '../shared/shared.module';
 
 const usageComponentController = `
 import { Component } from '@angular/core';
@@ -40,8 +44,19 @@ class User extends Subject<UserDetails> {
   selector: 'app-core',
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.scss'],
-  imports: [SharedModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [
+    AsyncPipe,
+    MatTabGroup,
+    MatTab,
+    Highlight,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    JsonPipe,
+    MatCardActions,
+    MatButton
+  ]
 })
 export class CoreComponent {
 

@@ -1,4 +1,3 @@
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withHashLocation } from '@angular/router';
@@ -20,7 +19,6 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
     provideRouter(routes, withHashLocation()),
     provideHttpClient(withInterceptorsFromDi()),
     provideSecurityCore(),
@@ -82,7 +80,7 @@ export const appConfig: ApplicationConfig = {
         typescript: () => import('highlight.js/lib/languages/typescript'),
         scss: () => import('highlight.js/lib/languages/scss'),
         xml: () => import('highlight.js/lib/languages/xml'),
-        bash: () => import('highlight.js/lib/languages/bash.js')
+        bash: () => import('highlight.js/lib/languages/bash')
       }
     })
   ]

@@ -1,18 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { Highlight } from 'ngx-highlightjs';
 
 import { PasswordFlowService } from '../../../projects/auth/src/lib/service/password-flow/password-flow.service';
 import { ImplicitFlowService } from '../../../projects/auth/src/lib/service/implicit-flow/implicit-flow.service';
 import {
   AuthorizationCodeFlowService
 } from '../../../projects/auth/src/lib/service/authorization-code-flow/authorization-code-flow.service';
-import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  imports: [SharedModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [
+    MatTabGroup,
+    MatTab,
+    Highlight
+  ],
 })
 export class AuthComponent implements OnInit {
 
@@ -23,16 +27,16 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     this.implicitFlowService
       .initialize()
-      .subscribe(console.log, console.error);
+      .subscribe({next: console.log, error: console.error});
     this.codeFlowService
       .initialize()
-      .subscribe(console.log, console.error);
+      .subscribe({next: console.log, error: console.error});
   }
 
   passwordFlow(): void {
     this.passwordFlowService
       .authenticate('test@example.com', 'T3st@example.com')
-      .subscribe(console.log, console.error);
+      .subscribe({next: console.log, error: console.error});
   }
 
   implicitFlow(): void {

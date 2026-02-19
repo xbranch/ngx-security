@@ -41,30 +41,42 @@ Now you are ready to use it. See [SecurityCoreModule](https://github.com/xbranch
 
 ### Pipes
 
-```html
-<p *ngIf="'ROLE_1' | hasRole">This should see users with ROLE_1</p>
+```angular20html
+@if ('ROLE_1' | hasRole) {
+    <p>This should see users with ROLE_1</p>
+}
 ```
 
-```html
-<p *ngIf="['ROLE_1','ROLE_2'] | hasAnyRole">This should see users with ROLE_1 or ROLE_2</p>
+```angular20html
+@if (['ROLE_1','ROLE_2'] | hasAnyRole) {
+    <p>This should see users with ROLE_1 or ROLE_2</p>
+}
 ```
 
-```html
-<p *ngIf="['ROLE_1','ROLE_2'] | hasRoles">This should see users with ROLE_1 and ROLE_2</p>
+```angular20html
+@if (['ROLE_1','ROLE_2'] | hasRoles) {
+    <p>This should see users with ROLE_1 and ROLE_2</p>
+}
 ```
 
 ### Pipes with poetry
 
-```html
-<p *ngIf="'user' | hasRole:'ROLE_1'">This should see users with ROLE_1</p>`
+```angular20html
+@if ('user' | hasRole:'ROLE_1') {
+    <p>This should see users with ROLE_1</p>`
+}
 ```
 
-```html
-<p *ngIf="'user' | hasAnyRole:['ROLE_1','ROLE_2']">This should see users with ROLE_1 or ROLE_2</p>`
+```angular20html
+@if ('user' | hasAnyRole:['ROLE_1','ROLE_2']) {
+    <p>This should see users with ROLE_1 or ROLE_2</p>`
+}
 ```
 
-```html
-<p *ngIf="'user' | hasRoles:['ROLE_1','ROLE_2']">This should see users with ROLE_1 and ROLE_2</p>`
+```angular20html
+@if ('user' | hasRoles:['ROLE_1','ROLE_2']) {
+    <p>This should see users with ROLE_1 and ROLE_2</p>`
+}
 ```
 
 ## Advance setup
